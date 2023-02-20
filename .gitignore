@@ -13,6 +13,8 @@ dist-ssr
 *.local
 
 /server/node_modules
+/server/.env
+
 /client/node_modules
 
 # Editor directories and files
