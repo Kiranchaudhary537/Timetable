@@ -1,16 +1,14 @@
 const express = require("express");
-const mongoose = require("mongoose");
-const Faculty = require("../models/Faculty");
+const Class = require("./../models/Class");
 
-const addFaculty = async (req, res, next) => {
-  const faculty = new Faculty({
-    name: req.body.name,
-    short_form: req.body.short_form,
-    username: req.body.username,
-    subjects: req.body.subjects,
+const addClass = async (req, res, next) => {
+  const classes = new Class({
+    semester: req.body.semester,
+    division: req.body.division,
+    department: req.body.department,
     updatedAt: Date.now(),
   });
-  await faculty
+  await classes
     .save()
     .then((e) => {
       res.status(200).send({
@@ -26,8 +24,8 @@ const addFaculty = async (req, res, next) => {
     });
 };
 
-const getFaculty = async (req, res, next) => {
-  Faculty.find()
+const getClass = async (req, res, next) => {
+  Class.find()
     .then((e) => {
       res.status(200).send({
         status: "success",
@@ -42,14 +40,14 @@ const getFaculty = async (req, res, next) => {
     });
 };
 
-const getFacultyById = async (req, res, next) => {
+const getClassById = async (req, res, next) => {
   const { id } = req.params;
 
-  Faculty.findById(id)
+  Class.findById(id)
     .then((e) => {
       res.status(200).send({
         status: "success",
-        res: e,
+        class: e,
       });
     })
     .catch((e) => {
@@ -59,9 +57,9 @@ const getFacultyById = async (req, res, next) => {
       });
     });
 };
-const getFacultyByIdAndUpdate = async (req, res, next) => {
+const getClassByIdAndUpdate = async (req, res, next) => {
   const { id } = req.params;
-  Faculty.findByIdAndUpdate(id, {
+  Class.findByIdAndUpdate(id, {
     semester: req.body.semester,
     division: req.body.division,
     department: req.body.department,
@@ -70,7 +68,7 @@ const getFacultyByIdAndUpdate = async (req, res, next) => {
     .then((e) => {
       res.status(200).send({
         status: "success",
-        res: e,
+        class: e,
       });
     })
     .catch((e) => {
@@ -80,13 +78,13 @@ const getFacultyByIdAndUpdate = async (req, res, next) => {
       });
     });
 };
-const getFacultyByIdAndDelete = async (req, res, next) => {
+const getClassByIdAndDelete = async (req, res, next) => {
   const { id } = req.params;
-  Faculty.findByIdAndDelete(id)
+  Class.findByIdAndDelete(id)
     .then((e) => {
       res.status(200).send({
         status: "success",
-        res: e,
+        class: e,
       });
     })
     .catch((e) => {
@@ -96,10 +94,10 @@ const getFacultyByIdAndDelete = async (req, res, next) => {
       });
     });
 };
-const FacultyRouter = express.Router();
-FacultyRouter.route("/").get(getFaculty).post(addFaculty);
-FacultyRouter.route("/:id")
-  .get(getFacultyById)
-  .patch(getFacultyByIdAndUpdate)
-  .delete(getFacultyByIdAndDelete);
-module.exports = FacultyRouter;
+const ClassRouter = express.Router();
+ClassRouter.route("/").get(getClass).post(addClass);
+ClassRouter.route("/:id")
+  .get(getClassById)
+  .patch(getClassByIdAndUpdate)
+  .delete(getClassByIdAndDelete);
+module.exports = ClassRouter;

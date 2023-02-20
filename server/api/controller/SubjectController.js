@@ -1,16 +1,16 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const Faculty = require("../models/Faculty");
+const Subject = require("../models/Subject");
 
-const addFaculty = async (req, res, next) => {
-  const faculty = new Faculty({
-    name: req.body.name,
-    short_form: req.body.short_form,
-    username: req.body.username,
-    subjects: req.body.subjects,
+const addSubject = async (req, res, next) => {
+  const { name, short_form, semester } = req.body;
+  const subject = new Subject({
+    name: name,
+    short_form: short_form,
+    semester: semester,
     updatedAt: Date.now(),
   });
-  await faculty
+  await subject
     .save()
     .then((e) => {
       res.status(200).send({
@@ -26,8 +26,8 @@ const addFaculty = async (req, res, next) => {
     });
 };
 
-const getFaculty = async (req, res, next) => {
-  Faculty.find()
+const getSubject = async (req, res, next) => {
+  Subject.find()
     .then((e) => {
       res.status(200).send({
         status: "success",
@@ -42,10 +42,10 @@ const getFaculty = async (req, res, next) => {
     });
 };
 
-const getFacultyById = async (req, res, next) => {
+const getSubjectById = async (req, res, next) => {
   const { id } = req.params;
 
-  Faculty.findById(id)
+  Subject.findById(id)
     .then((e) => {
       res.status(200).send({
         status: "success",
@@ -59,9 +59,9 @@ const getFacultyById = async (req, res, next) => {
       });
     });
 };
-const getFacultyByIdAndUpdate = async (req, res, next) => {
+const getSubjectByIdAndUpdate = async (req, res, next) => {
   const { id } = req.params;
-  Faculty.findByIdAndUpdate(id, {
+  Subject.findByIdAndUpdate(id, {
     semester: req.body.semester,
     division: req.body.division,
     department: req.body.department,
@@ -80,9 +80,9 @@ const getFacultyByIdAndUpdate = async (req, res, next) => {
       });
     });
 };
-const getFacultyByIdAndDelete = async (req, res, next) => {
+const getSubjectByIdAndDelete = async (req, res, next) => {
   const { id } = req.params;
-  Faculty.findByIdAndDelete(id)
+  Subject.findByIdAndDelete(id)
     .then((e) => {
       res.status(200).send({
         status: "success",
@@ -96,10 +96,11 @@ const getFacultyByIdAndDelete = async (req, res, next) => {
       });
     });
 };
-const FacultyRouter = express.Router();
-FacultyRouter.route("/").get(getFaculty).post(addFaculty);
-FacultyRouter.route("/:id")
-  .get(getFacultyById)
-  .patch(getFacultyByIdAndUpdate)
-  .delete(getFacultyByIdAndDelete);
-module.exports = FacultyRouter;
+
+const SubjectRouter = express.Router();
+SubjectRouter.route("/").get(getSubject).post(addSubject);
+SubjectRouter.route("/:id")
+  .get(getSubjectById)
+  .patch(getSubjectByIdAndUpdate)
+  .delete(getSubjectByIdAndDelete);
+module.exports = SubjectRouter;

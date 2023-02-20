@@ -1,5 +1,5 @@
 const express = require("express");
-const Class = require("../api/models/Class");
+const Class = require("../models/Class");
 
 const addClass = async (req, res, next) => {
   const classes = new Class({

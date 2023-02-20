@@ -1,9 +1,9 @@
 const express = require("express");
-const ClassRouter = require("../../controller/ClassController");
-const ClassroomRouter = require("../../controller/ClassroomController");
-const FacultyRouter = require("../../controller/FacultyController");
-const SubjectRouter = require("../../controller/SubjectController");
-const TimeSlotRouter = require("../../controller/TimeslotController");
+const ClassRouter = require("../controller/ClassController");
+const ClassroomRouter = require("../controller/ClassroomController");
+const FacultyRouter = require("../controller/FacultyController");
+const SubjectRouter = require("../controller/SubjectController");
+const TimeSlotRouter = require("../controller/TimeslotController");
 
 // router
 const ManageResource = express.Router();
