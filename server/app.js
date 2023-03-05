@@ -45,10 +45,10 @@ app.use("/v1/getclassroomtimetable", getFacultyTimetable);
 // app.use("/v1/requestforfaculty")
 // app.use("/v1/profile")
 
-// app.use("/v1/confirm", Confirm);
-// app.use("/register", Register);
-// app.use("/login", Login);
-// app.use("/forgot", Forgot);
+app.use("/confirm", Confirm);
+app.use("/register", Register);
+app.use("/login", Login);
+app.use("/forgot", Forgot);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");

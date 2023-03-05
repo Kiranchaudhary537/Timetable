@@ -13,8 +13,8 @@ const db = async () => {
     .then(() => {
       console.log("mangodb connected");
     })
-    .catch(() => {
-      console.log("error while connecting");
+    .catch((e) => {
+      console.log("error while connecting: "+e);
     });
 };
 
