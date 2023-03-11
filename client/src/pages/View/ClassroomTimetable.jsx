@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 import { Table, Column, HeaderCell, Cell } from "rsuite-table";
 import "rsuite-table/dist/css/rsuite-table.css";
 
@@ -24,63 +26,95 @@ const Data = [
 ];
 const Data2 = [
   {
-    id: 1,
-    day: "Monday",
-    slots: [
+    class: "h",
+    days: [
       {
         id: 1,
-        sub: "L.T",
+        day: "Monday",
+        slots: [
+          {
+            id: 1,
+            sub: "L.T",
+          },
+          {
+            id: 2,
+            sub: "S.E",
+          },
+          {
+            id: 3,
+            sub: "AOS",
+          },
+          {
+            id: 4,
+            sub: "AOS",
+          },
+        ],
       },
       {
         id: 2,
-        sub: "S.E",
-      },
-      {
-        id: 3,
-        sub: "AOS",
-      },
-      {
-        id: 4,
-        sub: "AOS",
-      },
-    ],
-  },
-  {
-    id: 2,
-    day: "Tuesday",
-    slots: [
-      {
-        id: 1,
-        sub: "AOS",
-      },
-      {
-        id: 2,
-        sub: "AOS",
-      },
-      {
-        id: 3,
-        sub: "AOS",
-      },
-      {
-        id: 4,
-        sub: "AOS",
+        day: "Tuesday",
+        slots: [
+          {
+            id: 1,
+            sub: "AOS",
+          },
+          {
+            id: 2,
+            sub: "AOS",
+          },
+          {
+            id: 3,
+            sub: "AOS",
+          },
+          {
+            id: 4,
+            sub: "AOS",
+          },
+        ],
       },
     ],
   },
 ];
 
-const ImageCell = ({ rowData, dataKey, ...rest }) => (
-  <Cell {...rest}>
-    <img src={rowData[dataKey]} width="50" />
-  </Cell>
-);
-
 export default function ClassroomTimetable() {
+  const [data, setData] = useState([]);
+  const { ClassroomId } = useParams();
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/v1/getclassroomtimetable/" + ClassroomId)
+      .then((res) => {
+        setData(res.data.message.days);
+        // console.log(res.data.message);
+      });
+  }, []);
   return (
     <>
       <div className="flex justify-center h-screen w-full">
         <div className="w-full mt-16">
-          <Table data={Data2}>
+          <Table data={data}>
+            <Column flexGrow={1}>
+              <HeaderCell>Day</HeaderCell>
+              <Cell dataKey="day" />
+            </Column>
+            {data.map((e) => {
+              return e.timeslots.map((e) => {
+                console.log(e);
+                return (
+                  <Column flexGrow={1} fullText>
+                    <HeaderCell>{e.Timeslot}</HeaderCell>
+
+                    <Cell>
+                      {(rowData, rowIndex) => {
+                        return <p>{e.Subject}</p>;
+                      }}
+                    </Cell>
+                  </Column>
+                );
+              });
+              // <p>{e.Timeslot}</p>
+            })}
+          </Table>
+          {/* <Table data={Data2[0].days}>
             <Column>
               <HeaderCell>Day</HeaderCell>
               <Cell dataKey="day" />
@@ -117,7 +151,7 @@ export default function ClassroomTimetable() {
               <HeaderCell>04:30 A.M To 05:30 A.M</HeaderCell>
               <Cell dataKey="" />
             </Column>
-          </Table>
+          </Table> */}
         </div>
       </div>
     </>

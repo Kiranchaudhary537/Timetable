@@ -37,8 +37,8 @@ const checkPermission = (req, res, next) => {
 app.use("/v1/manageresource", ManageResource);
 app.use("/v1/managetimetable", ManageTimetable);
 app.use("/v1/getclasstimetable", getClassTimetable);
-app.use("/v1/getfacultytimetable", getClassroomTimetable);
-app.use("/v1/getclassroomtimetable", getFacultyTimetable);
+app.use("/v1/getfacultytimetable", getFacultyTimetable);
+app.use("/v1/getclassroomtimetable", getClassroomTimetable);
 // app.use("/v1/getcurrentlaboccupancy")
 // app.use("/v1/getfucultystatus")
 // app.use("/v1/messages");
@@ -46,7 +46,7 @@ app.use("/v1/getclassroomtimetable", getFacultyTimetable);
 // app.use("/v1/profile")
 
 app.use("/confirm", Confirm);
-app.use("/register", Register);
+app.use("/signup", Register);
 app.use("/login", Login);
 app.use("/forgot", Forgot);
 

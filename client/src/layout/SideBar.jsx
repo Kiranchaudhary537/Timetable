@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 export default function SideBar() {
   return (
@@ -62,9 +62,17 @@ export default function SideBar() {
           <ul className="space-y-3 mt-8">
             <span className="">View Timetable</span>
             <li>
-              <Link
+              {/* <Link
                 to="/dashboard"
                 className="flex items-center p-2 text-base font-normal  rounded-lg  hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+              > */}
+              <NavLink
+                to="/dashboard"
+                className={({ isActive }) =>
+                  isActive
+                    ? "flex items-center p-2 text-base font-normal  rounded-lg  bg-gray-700 text-white font-bold"
+                    : "flex items-center p-2 text-base font-normal  rounded-lg  hover:text-white hover:bg-gray-100 hover:bg-gray-700"
+                }
               >
                 <svg
                   aria-hidden="true"
@@ -77,7 +85,7 @@ export default function SideBar() {
                   <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
                 </svg>
                 <span className="ml-3">Dashboard</span>
-              </Link>
+              </NavLink>
             </li>
             <li>
               <Link

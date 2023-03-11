@@ -6,20 +6,20 @@ const getTimetable = async (req, res) => {
     .then((e) => {
       res.status(200).send({
         status: "success",
-        res: e,
+        message: e,
       });
     })
     .catch((e) => {
       res.status(404).send({
         status: "failed",
-        res: e,
+        message: e,
       });
     });
 };
 
 const getTimetableById = async (req, res) => {
   const { id } = req.params;
-  await ClassroomTimetable.findOne(id)
+  await ClassroomTimetable.findById(id)
     .then((e) => {
       res.status(200).send({
         status: "reqest successfull",

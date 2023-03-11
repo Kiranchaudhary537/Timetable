@@ -10,22 +10,6 @@ const TimeSlotSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    // class: {
-    //   role: String,
-    //   id: { type: mongoose.Schema.Types.ObjectId, ref: "Class" },
-    // },
-    // classroom: {
-    //   role: String,
-    //   id: { type: mongoose.Schema.Types.ObjectId, ref: "Classroom" },
-    // },
-    // faculty: {
-    //   role: String,
-    //   id: { type: mongoose.Schema.Types.ObjectId, ref: "Faculty" },
-    // },
-    // subject: {
-    //   role: String,
-    //   id: { type: mongoose.Schema.Types.ObjectId, ref: "Subject" },
-    // },
     day: {
       type: String,
       enum: [

@@ -1,5 +1,5 @@
 import React from "react";
-
+import { Link } from "react-router-dom";
 export default function Header() {
   return (
     <>
@@ -10,8 +10,8 @@ export default function Header() {
           <div>
             <ul className=" flex flex-row">
               <li className="m-2 mx-4">
-                <a
-                  href="#"
+                <Link
+                  to="#"
                   className="flex items-center p-2 text-base font-normal  rounded-lg  hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
                   <svg
@@ -24,7 +24,7 @@ export default function Header() {
                     <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
                     <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
                   </svg>
-                </a>
+                </Link>
               </li>
               <li className="m-2 mx-4">
                 <a

@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 import { Table, Column, HeaderCell, Cell } from "rsuite-table";
 import "rsuite-table/dist/css/rsuite-table.css";
 
@@ -69,18 +71,45 @@ const Data2 = [
   },
 ];
 
-const ImageCell = ({ rowData, dataKey, ...rest }) => (
-  <Cell {...rest}>
-    <img src={rowData[dataKey]} width="50" />
-  </Cell>
-);
-
 export default function FacultyTimetable() {
+  const [data, setData] = useState([]);
+  const { FacultyId } = useParams();
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/v1/getfacultytimetable/" + FacultyId)
+      .then((res) => {
+        setData(res.data.message.days);
+      });
+    // console.log(data1);
+  }, []);
   return (
     <>
       <div className="flex justify-center h-screen w-full">
         <div className="w-full mt-16">
-          <Table data={Data2}>
+          <Table data={data}>
+            <Column flexGrow={1}>
+              <HeaderCell>Day</HeaderCell>
+              <Cell dataKey="day" />
+            </Column>
+            {data.map((e) => {
+              return e.timeslots.map((e) => {
+                console.log(e);
+                return (
+                  <Column flexGrow={1} fullText>
+                    <HeaderCell>{e.Timeslot}</HeaderCell>
+                    
+                    <Cell>
+                      {(rowData, rowIndex) => {
+                        return <p>{e.Subject}</p>;
+                      }}
+                    </Cell>
+                  </Column>
+                );
+              });
+              // <p>{e.Timeslot}</p>
+            })}
+          </Table>
+          {/* <Table data={Data2}>
             <Column>
               <HeaderCell>Day</HeaderCell>
               <Cell dataKey="day" />
@@ -117,7 +146,7 @@ export default function FacultyTimetable() {
               <HeaderCell>04:30 A.M To 05:30 A.M</HeaderCell>
               <Cell dataKey="" />
             </Column>
-          </Table>
+          </Table> */}
         </div>
       </div>
     </>

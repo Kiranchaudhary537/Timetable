@@ -2,8 +2,9 @@ const User = require("../../models/User");
 const jwt = require("jsonwebtoken");
 const express = require("express");
 require("dotenv").config();
+
 const verifyUser = (req, res, next) => {
-  //
+  
   if (!req.params.id) {
     return res.status(404).json({ code: -1, msg: "TOKEN_NOT_FOUND" });
   }

@@ -4,32 +4,12 @@ import { Outlet } from "react-router-dom";
 import { Table, Column, HeaderCell, Cell } from "rsuite-table";
 import "rsuite-table/dist/css/rsuite-table.css";
 
-const Data = [
-  {
-    id: 1,
-    name: "vd",
-    division: "h",
-    department: "IT",
-  },
-  {
-    id: 2,
-    name: "hdp",
-    division: "h",
-    department: "IT",
-  },
-  {
-    id: 3,
-    name: "skv",
-    division: "h",
-    department: "IT",
-  },
-];
 
 
-export default function Faculty() {
+export default function Subject() {
   const [data, setData] = useState([]);
   useEffect(() => {
-    axios.get("http://localhost:3000/v1/manageresource/faculty").then((res) => {
+    axios.get("http://localhost:3000/v1/manageresource/subject").then((res) => {
       setData(res.data.res);
     });
   }, []);
@@ -38,26 +18,22 @@ export default function Faculty() {
       <div className="w-full">
         <div className="flex justify-center h-screen w-full">
           <div className="w-9/12 mt-16">
-            <Table data={Data}>
+            <Table data={data}>
               <Column flexGrow={1}>
                 <HeaderCell>Select</HeaderCell>
                 <Cell dataKey="" />
               </Column>
               <Column flexGrow={1}>
-                <HeaderCell>No</HeaderCell>
-                <Cell dataKey="id" />
+                <HeaderCell>id</HeaderCell>
+                <Cell dataKey="_id" />
+              </Column>
+              <Column flexGrow={1}>
+                <HeaderCell>Short Name</HeaderCell>
+                <Cell dataKey="short_form" />
               </Column>
               <Column flexGrow={1}>
                 <HeaderCell>Name</HeaderCell>
                 <Cell dataKey="name" />
-              </Column>
-              <Column flexGrow={1}>
-                <HeaderCell>Short Form</HeaderCell>
-                <Cell dataKey="short_form" />
-              </Column>
-              <Column flexGrow={1}>
-                <HeaderCell>Subject</HeaderCell>
-                <Cell dataKey="Subject" />
               </Column>
             </Table>
           </div>

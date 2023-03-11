@@ -7,8 +7,8 @@ const jwt = require("jsonwebtoken");
 const Registeration = (req, res) => {
   const token = jwt.sign({ email: req.body.email }, process.env.JWT_SECRET);
   const user = new User({
-    firstname: req.body.firstname,
-    lastname: req.body.lastname,
+    firstname: req.body.fname,
+    lastname: req.body.lname,
     email: req.body.email,
     password: bcrypt.hashSync(req.body.password, 8),
     confirmationCode: token,

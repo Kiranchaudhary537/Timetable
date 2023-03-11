@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 import { Table, Column, HeaderCell, Cell } from "rsuite-table";
 import "rsuite-table/dist/css/rsuite-table.css";
 
@@ -23,6 +25,10 @@ const Data = [
   },
 ];
 const Data2 = [
+  {
+    id: 1,
+    day: "Classroom:26",
+  },
   {
     id: 1,
     day: "Monday",
@@ -69,19 +75,46 @@ const Data2 = [
   },
 ];
 
-const ImageCell = ({ rowData, dataKey, ...rest }) => (
-  <Cell {...rest}>
-    <img src={rowData[dataKey]} width="50" />
-  </Cell>
-);
-
 export default function ClassTimetable() {
+  const [data, setData] = useState([]);
+  const [data1, setData1] = useState([]);
+  const { ClassId } = useParams();
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/v1/getclasstimetable/" + ClassId)
+      .then((res) => {
+        setData(res.data.message.days);
+        setData1(res.data.message.days[0].timeslots);
+        // console.log(res.data.message);
+      });
+    console.log(data1);
+  }, []);
   return (
     <>
       <div className="flex justify-center h-screen w-full">
         <div className="w-full mt-16">
-          <Table data={Data2}>
-            <Column>
+          <Table data={data}>
+            <Column flexGrow={1}>
+              <HeaderCell>Day</HeaderCell>
+              <Cell dataKey="day" />
+            </Column>
+            {data1.map((e) => {
+              return (
+                <Column flexGrow={1} fullText>
+                  <HeaderCell>{e.Timeslot}</HeaderCell>
+                  {/* <Cell dataKey={"timeslots" + [0] + ".Subject"} /> */}
+                  <Cell>
+                    {(rowData, rowIndex) => {
+                      return <p>{e.Subject}</p>;
+                    }}
+                  </Cell>
+                </Column>
+                // <p>{e.Timeslot}</p>
+              );
+            })}
+          </Table>
+          {/* <Table data={Data2}>
+            <Column flexGrow={1}>
               <HeaderCell>Day</HeaderCell>
               <Cell dataKey="day" />
             </Column>
@@ -117,7 +150,7 @@ export default function ClassTimetable() {
               <HeaderCell>04:30 A.M To 05:30 A.M</HeaderCell>
               <Cell dataKey="" />
             </Column>
-          </Table>
+          </Table> */}
         </div>
       </div>
     </>

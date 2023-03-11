@@ -1,7 +1,9 @@
-import React from 'react'
+import React from "react";
 
 export default function Dashboard() {
   return (
-    <div>Dashboard</div>
-  )
+    <div className="flex justify-center h-screen w-full">
+      <p>This page is under working.</p>
+    </div>
+  );
 }
