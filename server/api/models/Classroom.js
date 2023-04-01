@@ -3,13 +3,13 @@ const mongoose = require("mongoose");
 const ClassroomSchema = new mongoose.Schema(
   {
     no: {
-      type: Number,
+      type: String,
       unique: true,
       required: true,
     },
     type: {
       type: String,
-      enum: ["Lab", "Classroom"],
+      enum: ["LAB", "CLASSROOM"],
     },
     updatedAt: {
       type: Date,

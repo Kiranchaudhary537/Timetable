@@ -31,15 +31,15 @@ const ClassroomTimetableSchema = new mongoose.Schema(
               type: String,
               required: true,
             },
-            class: {
+            Semester: {
               type: Number,
               required: true,
             },
-            division: {
+            Division: {
               type: String,
               required: true,
             },
-            faculty: {
+            Faculty: {
               type: String,
               required: true,
             },

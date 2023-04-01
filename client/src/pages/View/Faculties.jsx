@@ -1,38 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-const Data = [
-  {
-    id: 1,
-    semester: 6,
-    division: "H",
-  },
-  {
-    id: 1,
-    semester: 6,
-    division: "I",
-  },
-  {
-    id: 1,
-    semester: 4,
-    division: "H",
-  },
-  {
-    id: 1,
-    semester: 6,
-    division: "H",
-  },
-  {
-    id: 1,
-    semester: 6,
-    division: "I",
-  },
-  {
-    id: 1,
-    semester: 4,
-    division: "H",
-  },
-];
+
 export default function Faculties() {
   const width = Math.floor(window.innerWidth / 15);
 
@@ -66,7 +35,7 @@ export default function Faculties() {
         // return e.days.map((e) => {
         //   return e.day == dayName ? (
         return (
-          <Link to={`${e._id}`}>
+          <Link to={`${e.name}`} state={e}>
             <div className="flex justify-center">
               <div
                 className={`block max-w-sm rounded-lg bg-white p-6 shadow-lg ${
@@ -109,9 +78,6 @@ export default function Faculties() {
               </div>
             </div>
           </Link>
-
-          //    : (
-          //     <></>
         );
       })}
     </div>

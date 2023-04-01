@@ -1,9 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { useNavigate, NavLink } from "react-router-dom";
 import { Link } from "react-router-dom";
+import Cookies from "js-cookie";
+// import { AuthContext } from "./context/authContext";
+// import jwt from "jsonwebtoken";
+// import dotenv from 'dotenv'
+// dotenv.config()
 
 const Login = ({ setUserState }) => {
+  // const { login } = useContext(AuthContext);
   const navigate = useNavigate();
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
@@ -43,22 +49,47 @@ const Login = ({ setUserState }) => {
     // }
   };
 
+  const API_URL = "http://localhost:3000";
   useEffect(() => {
     if (Object.keys(formErrors).length === 0 && isSubmit) {
-      console.log(user);
       axios
-        .post("http://localhost:3000/login", user)
-        .then((res) => {
-          console.log(res);
-          localStorage.setItem("user", JSON.stringify(res.data));
+        .post(`${API_URL}/login`, user, {
+          headers: {
+            "Content-Type": "application/json",
+            "x-access-token": localStorage.getItem("user"),
+          },
+        })
+        .then((response) => {
+          // Handle successful response
+
+          Cookies.remove();
+          console.log(response.data.token);
+          Cookies.set("token", response.data.token);
+          // const role = jwt.sign(
+          //   { role: response.data.role },
+          //   process.env.JWT_SECRET
+          // );
+          Cookies.set("role",response.data.role);
           navigate("/dashboard", { replace: true });
         })
-        .catch((e) => {
-          console.log(e);
+        .catch((error) => {
           setVerifiedError(true);
+          console.error(error);
         });
+      // axios
+      //   .post("http://localhost:3000/login", user)
+      //   .then((res) => {
+      //     console.log(res);
+      //     localStorage.setItem("user", JSON.stringify(res.data));
+      //     navigate("/dashboard", { replace: true });
+      //   })
+      //   .catch((e) => {
+      //     console.log(e);
+      //     setVerifiedError(true);
+      //   });
     }
   }, [formErrors, isSubmit]);
+
   return (
     <section className="bg-gradient-to-r from-cyan-500 to-blue-500">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
@@ -76,7 +107,10 @@ const Login = ({ setUserState }) => {
             </h1>
             <form className="space-y-4 md:space-y-6" action="#">
               <div>
-                <label htmlFor="email" className="block mb-2 text-sm font-medium  ">
+                <label
+                  htmlFor="email"
+                  className="block mb-2 text-sm font-medium  "
+                >
                   Your email
                 </label>
                 <input
@@ -92,7 +126,10 @@ const Login = ({ setUserState }) => {
                 <p className="text-red-600">{formErrors.email}</p>
               </div>
               <div>
-                <label htmlFor="password" className="block mb-2 text-sm font-medium  ">
+                <label
+                  htmlFor="password"
+                  className="block mb-2 text-sm font-medium  "
+                >
                   Password
                 </label>
                 <input

@@ -16,8 +16,8 @@ const FacultySchema = new mongoose.Schema(
     },
     subjects: [
       {
-        role: String,
-        id: { type: mongoose.Schema.Types.ObjectId, ref: "Subject" },
+        type: String,
+        required: true,
       },
     ],
     updatedAt: {

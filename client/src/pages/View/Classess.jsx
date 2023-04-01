@@ -1,8 +1,27 @@
 import cx from "classnames";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-
+const Data = [
+  {
+    id: 1,
+    semester: "6",
+    division: "h",
+    department: "IT",
+  },
+  {
+    id: 2,
+    semester: "6",
+    division: "h",
+    department: "IT",
+  },
+  {
+    id: 3,
+    semester: "6",
+    division: "h",
+    department: "IT",
+  },
+];
 export default function Classess() {
   const randomBetween = (min, max) =>
     min + Math.floor(Math.random() * (max - min + 1));
@@ -15,7 +34,7 @@ export default function Classess() {
       setData(res.data.message);
     });
     console.log(data);
-  }, [ ]);
+  }, []);
 
   return (
     <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 auto-cols-fr	">

@@ -1,7 +1,27 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
+import { MdDashboard } from "react-icons/md";
+import { SiGoogleclassroom } from "react-icons/si";
+import { RiComputerLine } from "react-icons/ri";
+import { BsPerson } from "react-icons/bs";
+import { GoLocation } from "react-icons/go";
+import { MdLocationOn } from "react-icons/md";
+import { ImClock } from "react-icons/im";
+import { TbCalendarTime } from "react-icons/tb";
+import { FiPieChart } from "react-icons/fi";
+import { GrMail } from "react-icons/gr";
+import { FiSettings } from "react-icons/fi";
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 
-export default function SideBar() {
+export default function SideBar({ setHeaderTitle }) {
+  const navigate = useNavigate();
+  const role = Cookies.get("role");
+  console.log(role);
+
+  const goToLogin = () => {
+    navigate("/login");
+  };
   return (
     <>
       <button
@@ -29,7 +49,7 @@ export default function SideBar() {
 
       <aside
         id="default-sidebar"
-        className="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 border-gray-700 border-r-2 border-dashed  dark:border-gray-700"
+        className="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 border-gray-700 border-r  dark:border-gray-700"
         aria-label="Sidebar"
       >
         <div className="h-full px-3 py-4 overflow-y-auto ">
@@ -64,7 +84,11 @@ export default function SideBar() {
             <li>
               {/* <Link
                 to="/dashboard"
-                className="flex items-center p-2 text-base font-normal  rounded-lg  hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                 className={({ isActive }) =>
+                    isActive
+                      ? "flex items-center p-2 text-base font-normal  rounded-lg  bg-gray-700 text-white font-bold"
+                      : "flex items-center p-2 text-base font-normal  rounded-lg  hover:text-white hover:bg-gray-100 hover:bg-gray-700"
+                  }
               > */}
               <NavLink
                 to="/dashboard"
@@ -74,169 +98,136 @@ export default function SideBar() {
                     : "flex items-center p-2 text-base font-normal  rounded-lg  hover:text-white hover:bg-gray-100 hover:bg-gray-700"
                 }
               >
-                <svg
-                  aria-hidden="true"
-                  className="w-6 h-6 text-white-900  group-hover:text-gray-900 dark:group-hover:text-white"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
-                  <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
-                </svg>
+                <MdDashboard size={24} />
                 <span className="ml-3">Dashboard</span>
               </NavLink>
             </li>
             <li>
-              <Link
+              <NavLink
                 to="/classtimetable"
-                className="flex items-center p-2 text-base font-normal  rounded-lg  hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                className={({ isActive }) =>
+                  isActive
+                    ? "flex items-center p-2 text-base font-normal  rounded-lg  bg-gray-700 text-white font-bold"
+                    : "flex items-center p-2 text-base font-normal  rounded-lg  hover:text-white hover:bg-gray-100 hover:bg-gray-700"
+                }
               >
-                <svg
-                  aria-hidden="true"
-                  className="w-6 h-6 text-white-900  group-hover:text-gray-900 dark:group-hover:text-white"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
-                </svg>
+                <SiGoogleclassroom size={24} />
                 <span className="flex-1 ml-3 whitespace-nowrap">
                   Class Timetable
                 </span>
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/facultytimetable"
-                className="flex items-center p-2 text-base font-normal  rounded-lg  hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
-              >
-                <svg
-                  aria-hidden="true"
-                  className="w-6 h-6 text-white-900  group-hover:text-gray-900 dark:group-hover:text-white"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M8.707 7.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l2-2a1 1 0 00-1.414-1.414L11 7.586V3a1 1 0 10-2 0v4.586l-.293-.293z"></path>
-                  <path d="M3 5a2 2 0 012-2h1a1 1 0 010 2H5v7h2l1 2h4l1-2h2V5h-1a1 1 0 110-2h1a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V5z"></path>
-                </svg>
-                <span className="flex-1 flex-wrap ml-3 whitespace-nowrap">
-                  Faculty Timetable
-                </span>
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/classroomtimetable"
-                className="flex items-center p-2 text-base font-normal  rounded-lg  hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
-              >
-                <svg
-                  aria-hidden="true"
-                  className="w-6 h-6 text-white-900  group-hover:text-gray-900 dark:group-hover:text-white"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                    clipRule="evenodd"
-                  ></path>
-                </svg>
-                <span className="flex-1 ml-3 whitespace-nowrap">
-                  Lab & Classroom <br /> Timetable
-                </span>
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/currentlaboccupancy"
-                className="flex items-center p-2 text-base font-normal  rounded-lg  hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
-              >
-                <svg
-                  aria-hidden="true"
-                  className="w-6 h-6 text-white-900  group-hover:text-gray-900 dark:group-hover:text-white"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z"
-                    clipRule="evenodd"
-                  ></path>
-                </svg>
-                <span className="flex-1 ml-3 whitespace-nowrap">
-                  Current Lab Occupancy
-                </span>
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/currentfacultyavailability"
-                className="flex items-center p-2 text-base font-normal  rounded-lg  hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
-              >
-                <svg
-                  aria-hidden="true"
-                  className="w-6 h-6 text-white-900  group-hover:text-gray-900 dark:group-hover:text-white"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z"
-                    clipRule="evenodd"
-                  ></path>
-                </svg>
-                <span className="flex-1 ml-3 whitespace-nowrap">
-                  Current Faculty Availability
-                </span>
-              </Link>
+              </NavLink>
             </li>
           </ul>
-          <ul className="space-y-3 mt-4">
-            <span className="">Manage Timetable</span>
-            <li>
-              <Link
-                to="/managetimetable"
-                className="flex items-center p-2 text-base font-normal  rounded-lg  hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
-              >
-                <svg
-                  aria-hidden="true"
-                  className="w-6 h-6 text-white-900  group-hover:text-gray-900 dark:group-hover:text-white"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
+          {role == "FACULTY" || role == "COORDINATOR" || role == "ADMIN" ? (
+            <ul>
+              <li>
+                <NavLink
+                  to="/facultytimetable"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "flex items-center p-2 text-base font-normal  rounded-lg  bg-gray-700 text-white font-bold"
+                      : "flex items-center p-2 text-base font-normal  rounded-lg  hover:text-white hover:bg-gray-100 hover:bg-gray-700"
+                  }
                 >
-                  <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
-                  <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
-                </svg>
-                <span className="ml-3">Manage Timetable</span>
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/manageresource"
-                className="flex items-center p-2 text-base font-normal  rounded-lg  hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
-              >
-                <svg
-                  aria-hidden="true"
-                  className="w-6 h-6 text-white-900  group-hover:text-gray-900 dark:group-hover:text-white"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
+                  <BsPerson size={24} />
+                  <span className="flex-1 flex-wrap ml-3 whitespace-nowrap">
+                    Faculty Timetable
+                  </span>
+                </NavLink>
+              </li>
+              {/* <li>
+                <NavLink
+
+                  to="/classroomtimetable"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "flex items-center p-2 text-base font-normal  rounded-lg  bg-gray-700 text-white font-bold"
+                      : "flex items-center p-2 text-base font-normal  rounded-lg  hover:text-white hover:bg-gray-100 hover:bg-gray-700"
+                  }
                 >
-                  <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
-                </svg>
-                <span className="flex-1 ml-3 whitespace-nowrap">
-                  Manage Resources
-                </span>
-              </Link>
-            </li>
+                  <RiComputerLine size={24} />
+                  <span className="flex-1 ml-3 whitespace-nowrap">
+                    Lab & Classroom <br /> Timetable
+                  </span>
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/currentlaboccupancy"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "flex items-center p-2 text-base font-normal  rounded-lg  bg-gray-700 text-white font-bold"
+                      : "flex items-center p-2 text-base font-normal  rounded-lg  hover:text-white hover:bg-gray-100 hover:bg-gray-700"
+                  }
+                >
+                  <GoLocation size={24} />
+                  <span className="flex-1 ml-3 whitespace-nowrap">
+                    Current Lab
+                    <br />
+                    Occupancy
+                  </span>
+                </NavLink>
+              </li> */}
+              <li>
+                <NavLink
+                  to="/currentfacultyavailability"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "flex items-center p-2 text-base font-normal  rounded-lg  bg-gray-700 text-white font-bold"
+                      : "flex items-center p-2 text-base font-normal  rounded-lg  hover:text-white hover:bg-gray-100 hover:bg-gray-700"
+                  }
+                >
+                  <ImClock size={24} />
+                  <span className="flex-1 ml-3 whitespace-nowrap">
+                    Current Faculty
+                    <br />
+                    Availability
+                  </span>
+                </NavLink>
+              </li>
+            </ul>
+          ) : (
+            <></>
+          )}
+          {role == "COORDINATOR" ? (
+            <ul className="space-y-3 mt-4">
+              <span className="">Manage Timetable</span>
+              <li>
+                <NavLink
+                  to="/managetimetable"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "flex items-center p-2 text-base font-normal  rounded-lg  bg-gray-700 text-white font-bold"
+                      : "flex items-center p-2 text-base font-normal  rounded-lg  hover:text-white hover:bg-gray-100 hover:bg-gray-700"
+                  }
+                >
+                  <TbCalendarTime size={24} />
+                  <span className="ml-3">Manage Timetable</span>
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/manageresource"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "flex items-center p-2 text-base font-normal  rounded-lg  bg-gray-700 text-white font-bold"
+                      : "flex items-center p-2 text-base font-normal  rounded-lg  hover:text-white hover:bg-gray-100 hover:bg-gray-700"
+                  }
+                >
+                  <FiPieChart size={24} />
+                  <span className="flex-1 ml-3 whitespace-nowrap">
+                    Manage Resources
+                  </span>
+                </NavLink>
+              </li>
+            </ul>
+          ) : (
+            <></>
+          )}
+          <ul>
             <li>
-              <Link
+              <NavLink
+                // onClick={goToLogin()}
                 to="/classtimetable"
                 className="flex items-center p-2 text-red-500 text-base font-normal  rounded-lg  hover:text-red-500 hover:bg-red-100 dark:hover:bg-gray-700"
               >
@@ -254,7 +245,7 @@ export default function SideBar() {
                   ></path>
                 </svg>
                 <span className="flex-1 ml-3 whitespace-nowrap">Sign Up</span>
-              </Link>
+              </NavLink>
             </li>
           </ul>
         </div>

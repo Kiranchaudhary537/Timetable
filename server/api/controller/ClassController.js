@@ -94,8 +94,25 @@ const getClassByIdAndDelete = async (req, res, next) => {
       });
     });
 };
+const getClassByIdAndDeleteAll = async (req, res, next) => {
+  req.body.map((id) => {
+    Class.findByIdAndDelete(id)
+      .then((e) => {})
+      .catch((e) => {
+        res.status(404).send({
+          status: "failed",
+        });
+      });
+  });
+  res.status(200).send({
+    status: "success",
+  });
+};
 const ClassRouter = express.Router();
-ClassRouter.route("/").get(getClass).post(addClass);
+ClassRouter.route("/")
+  .get(getClass)
+  .post(addClass)
+  .patch(getClassByIdAndDeleteAll);
 ClassRouter.route("/:id")
   .get(getClassById)
   .patch(getClassByIdAndUpdate)

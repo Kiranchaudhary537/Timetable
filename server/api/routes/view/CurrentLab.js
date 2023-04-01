@@ -23,6 +23,6 @@ const getTimetableById = async (req, res) => {
   });
 };
 
-const getCurrentClassroomStatus = express.Router();
-getCurrentClassroomStatus.route("/:id").get(getTimetableById);
-module.exports = getCurrentClassroomStatus;
+const getCurrentLabStatus = express.Router();
+getCurrentLabStatus.route("/:id").get(getTimetableById);
+module.exports = getCurrentLabStatus;

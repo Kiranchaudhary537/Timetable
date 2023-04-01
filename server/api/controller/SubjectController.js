@@ -96,9 +96,25 @@ const getSubjectByIdAndDelete = async (req, res, next) => {
       });
     });
 };
-
+const getSubjectByIdAndDeleteAll = async (req, res, next) => {
+  req.body.map((id) => {
+    Subject.findByIdAndDelete(id)
+      .then((e) => {})
+      .catch((e) => {
+        res.status(404).send({
+          status: "failed",
+        });
+      });
+  });
+  res.status(200).send({
+    status: "success",
+  });
+};
 const SubjectRouter = express.Router();
-SubjectRouter.route("/").get(getSubject).post(addSubject);
+SubjectRouter.route("/")
+  .get(getSubject)
+  .post(addSubject)
+  .patch(getSubjectByIdAndDeleteAll);
 SubjectRouter.route("/:id")
   .get(getSubjectById)
   .patch(getSubjectByIdAndUpdate)

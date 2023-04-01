@@ -83,74 +83,54 @@ export default function ClassTimetable() {
     axios
       .get("http://localhost:3000/v1/getclasstimetable/" + ClassId)
       .then((res) => {
-        setData(res.data.message.days);
-        setData1(res.data.message.days[0].timeslots);
-        // console.log(res.data.message);
+        setData(res.data.message);
+        setData1(res.data.message.timeslots);
+        console.log(res.data.message.timeslots);
       });
-    console.log(data1);
   }, []);
+
   return (
     <>
       <div className="flex justify-center h-screen w-full">
         <div className="w-full mt-16">
-          <Table data={data}>
-            <Column flexGrow={1}>
-              <HeaderCell>Day</HeaderCell>
-              <Cell dataKey="day" />
-            </Column>
-            {data1.map((e) => {
-              return (
-                <Column flexGrow={1} fullText>
-                  <HeaderCell>{e.Timeslot}</HeaderCell>
-                  {/* <Cell dataKey={"timeslots" + [0] + ".Subject"} /> */}
-                  <Cell>
-                    {(rowData, rowIndex) => {
-                      return <p>{e.Subject}</p>;
-                    }}
-                  </Cell>
-                </Column>
-                // <p>{e.Timeslot}</p>
-              );
-            })}
-          </Table>
-          {/* <Table data={Data2}>
-            <Column flexGrow={1}>
-              <HeaderCell>Day</HeaderCell>
-              <Cell dataKey="day" />
-            </Column>
-            <Column flexGrow={1} fullText>
-              <HeaderCell>8:30 A.M To 10:30 A.M</HeaderCell>
-              <Cell dataKey="slots[0].sub" />
-            </Column>
-            <Column flexGrow={1}>
-              <HeaderCell>10:30 A.M To 10:45 A.M</HeaderCell>
-              <Cell dataKey="slots[1].sub" />
-            </Column>
-            <Column flexGrow={1}>
-              <HeaderCell>10:45 A.M To 11:45 A.M</HeaderCell>
-              <Cell dataKey="" />
-            </Column>
-            <Column flexGrow={1}>
-              <HeaderCell>11:45 A.M To 12:45 A.M</HeaderCell>
-              <Cell dataKey="" />
-            </Column>
-            <Column flexGrow={1}>
-              <HeaderCell>01:30 A.M To 02:30 A.M</HeaderCell>
-              <Cell dataKey="" />
-            </Column>
-            <Column flexGrow={1}>
-              <HeaderCell>02:30 A.M To 03:30 A.M</HeaderCell>
-              <Cell dataKey="" />
-            </Column>
-            <Column flexGrow={1}>
-              <HeaderCell>03:30 A.M To 04:30 A.M</HeaderCell>
-              <Cell dataKey="" />
-            </Column>
-            <Column flexGrow={1}>
-              <HeaderCell>04:30 A.M To 05:30 A.M</HeaderCell>
-              <Cell dataKey="" />
-            </Column>
-          </Table> */}
+          <table id="timetable" className="border m-2 ">
+            <thead>
+              <tr>
+                {data1.map((e) => {
+                  return (
+                    <th
+                      align="center"
+                      className="border"
+                      style={{ width: "150px", minWidth: "70px" }}
+                    >
+                      {e.timeslot}
+                    </th>
+                  );
+                })}
+              </tr>
+            </thead>
+            <tbody>
+              {data.days?.map((e) => {
+                return (
+                  <tr>
+                    <td align="center" className="border">
+                      {e.day}
+                    </td>
+                    {e.timeslots.map((ele) => {
+                      return (
+                        <td align="center" className="border">
+                          {ele.Subject}
+                          <br />
+                          {ele.Faculty}
+                          <br />
+                        </td>
+                      );
+                    })}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </div>
       </div>
     </>

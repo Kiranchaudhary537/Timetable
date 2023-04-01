@@ -84,6 +84,7 @@ export default function ClassroomTimetable() {
       .get("http://localhost:3000/v1/getclassroomtimetable/" + ClassroomId)
       .then((res) => {
         setData(res.data.message.days);
+        // setData(Data2);
         // console.log(res.data.message);
       });
   }, []);

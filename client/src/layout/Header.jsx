@@ -1,12 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
-export default function Header() {
+export default function Header({headertitle}) {
   return (
     <>
       <header >
         <div className="flex items-center justify-between h-36 mx-12 mb-2 rounded  ">
           {/* <p className="text-2xl text-gray-400 dark:text-gray-500">header</p> */}
-          <h1 className="text-3xl">Dashboard</h1>
+          <h1 className="text-3xl">{headertitle}</h1>
           <div>
             <ul className=" flex flex-row">
               <li className="m-2 mx-4">

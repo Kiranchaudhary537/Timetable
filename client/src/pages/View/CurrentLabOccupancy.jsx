@@ -1,5 +1,6 @@
 import cx from "classnames";
 import { Link } from "react-router-dom";
+import { CheckCurrentLabStatus } from "../../Utils/CheckCurrentStatus";
 
 const Data = [
   {
@@ -24,7 +25,9 @@ const Data = [
 
 export default function CurrentLabOccupancy() {
   const width = Math.floor(window.innerWidth / 15);
-  
+  const handleStatus = () => {
+    CheckCurrentLabStatus();
+  };
   return (
     <div class="grid md:grid-cols-2 lg:grid-cols-3  gap-8 auto-cols-fr	">
       {Data.map((e) => {
@@ -32,7 +35,7 @@ export default function CurrentLabOccupancy() {
           <div className="flex justify-center">
             <div
               className={`block max-w-sm rounded-lg bg-white p-6 shadow-lg ${
-                true==true ? "dark:bg-lime-700" : "dark:bg-red-700"
+                true == true ? "dark:bg-lime-700" : "dark:bg-red-700"
               }`}
             >
               <div className="flex flex-row flex-nowrap m-3 ">

@@ -11,6 +11,7 @@ const Register = () => {
     email: "",
     password: "",
     cpassword: "",
+    role: "",
   });
 
   const changeHandler = (e) => {
@@ -47,6 +48,9 @@ const Register = () => {
     } else if (values.cpassword !== values.password) {
       error.cpassword = "Confirm password and password should be same";
     }
+    if (!values.role) {
+      error.role = "Role is required";
+    }
     return error;
   };
   const signupHandler = (e) => {
@@ -57,14 +61,29 @@ const Register = () => {
     //   setIsSubmit(true);
     // }
   };
-
+  const API_URL = "http://localhost:3000";
   useEffect(() => {
     if (Object.keys(formErrors).length === 0 && isSubmit) {
       console.log(user);
-      axios.post("http://localhost:3000/signup", user).then((res) => {
-        alert(res.data.message);
-        navigate("/login", { replace: true });
-      });
+      axios
+        .post(`${API_URL}/example`, user, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((response) => {
+          localStorage.setItem("user", response.token);
+          localStorage.setItem("role", response.role);
+          navigate("/login", { replace: true });
+        })
+        .catch((error) => {
+          setVerifiedError(true);
+          console.error(error);
+        });
+      // axios.post("http://localhost:3000/signup", user).then((res) => {
+      //   alert(res.data.message);
+      //   navigate("/login", { replace: true });
+      // });
     }
   }, [formErrors]);
   return (
@@ -163,7 +182,45 @@ const Register = () => {
                   />
                   <p className="text-red-600">{formErrors.cpassword}</p>
                 </div>
-
+                <div className="">
+                  <div className="flex   flex-row  justify-start">
+                    <div className="flex mb-2 mx-3 flex-row ">
+                      <label
+                        for="password"
+                        class="block  p-2 text-sm font-medium  "
+                      >
+                        Student
+                      </label>
+                      <input
+                        type="radio"
+                        name="role"
+                        value="STUDENT"
+                        id="student"
+                        onChange={changeHandler}
+                        class="bg-gray-50 border border-gray-300  sm:text-sm rounded-lg focus:ring-primary-600 focus:border-blue-600 block w-full p-2.5"
+                        required
+                      />
+                    </div>
+                    <div className="flex mb-2  mx-3 flex-row ">
+                      <label
+                        for="password"
+                        class="block p-2 text-sm font-medium  "
+                      >
+                        Faculty
+                      </label>
+                      <input
+                        type="radio"
+                        name="role"
+                        value="FACULTY"
+                        id="faculty"
+                        onChange={changeHandler}
+                        class="bg-gray-50 border border-gray-300  sm:text-sm rounded-lg focus:ring-primary-600 focus:border-blue-600 block w-full p-2.5"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <p className="text-red-600">{formErrors.role}</p>
+                </div>
                 <button
                   class="w-full text-black  hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-gray-700  text-white dark:focus:ring-primary-800"
                   onClick={signupHandler}

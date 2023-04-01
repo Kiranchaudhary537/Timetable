@@ -19,9 +19,12 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    roles: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Role",
+    role: {
+      type: String,
+      unique: true,
+      required: true,
+      enum: ["STUDENT", "FACULTY", "ADMIN", "COORDINATOR"],
+      default: "STUDENT",
     },
     status: {
       type: String,

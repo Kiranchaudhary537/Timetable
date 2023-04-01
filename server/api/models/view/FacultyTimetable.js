@@ -6,6 +6,18 @@ const FacultyTimetableSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    timeslots: [
+      {
+        id: {
+          type: String,
+          required: true,
+        },
+        timeslot: {
+          type: String,
+          required: true,
+        },
+      },
+    ],
     days: [
       {
         day: {
@@ -31,11 +43,15 @@ const FacultyTimetableSchema = new mongoose.Schema(
               type: String,
               required: true,
             },
-            class: {
-              type: Number,
+            Type: {
+              type: String,
               required: true,
             },
-            division: {
+            Semester: {
+              type: String,
+              required: true,
+            },
+            Division: {
               type: String,
               required: true,
             },

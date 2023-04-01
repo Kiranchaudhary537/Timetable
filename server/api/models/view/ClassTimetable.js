@@ -10,7 +10,31 @@ const ClassTimetableSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    days:[
+    timeslots: [
+      {
+        id: {
+          type: String,
+          required: true,
+        },
+        timeslot: {
+          type: String,
+          required: true,
+        },
+      },
+    ],
+    classroomno: [
+      {
+        id: {
+          type: String,
+          required: true,
+        },
+        no: {
+          type: String,
+          required: true,
+        },
+      },
+    ],
+    days: [
       {
         day: {
           type: String,
@@ -43,9 +67,13 @@ const ClassTimetableSchema = new mongoose.Schema(
               type: String,
               required: true,
             },
+            id: {
+              type: Number,
+              required: true,
+            },
           },
         ],
-      }
+      },
     ],
     // day: {
     //   type: String,

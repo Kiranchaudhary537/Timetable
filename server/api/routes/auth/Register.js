@@ -4,31 +4,40 @@ const express = require("express");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 
-const Registeration = (req, res) => {
+const Registeration = async (req, res) => {
   const token = jwt.sign({ email: req.body.email }, process.env.JWT_SECRET);
-  const user = new User({
-    firstname: req.body.fname,
-    lastname: req.body.lname,
-    email: req.body.email,
-    password: bcrypt.hashSync(req.body.password, 8),
-    confirmationCode: token,
-  });
-  user
-    .save()
-    .then((e) => {
-      res.status(200).send({
-        status: "success",
-        res: e,
-      });
-    })
-    .catch((e) => {
-      res.status(404).send({
-        status: "failed",
-        res: e,
-      });
-    });
-};
 
+  try {
+    const user = new User({
+      firstname: req.body.fname,
+      lastname: req.body.lname,
+      email: req.body.email,
+      role: req.body.role,
+      password: bcrypt.hashSync(req.body.password, 8),
+      confirmationCode: token,
+    });
+    user.save((error, result) => {
+      if (error) {
+        console.log(error);
+        res.status(500).json({
+          message: "An error has occured.",
+        });
+      } else {
+        res.status(201).json({
+          message: "User created.",
+        });
+      }
+    });
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({
+      message: "An error has occured.",
+    });
+  }
+};
+const checkpoint = (req, res) => {
+  res.send("point working");
+};
 const Register = express.Router();
-Register.route("/").post(Registeration);
+Register.route("/").post(Registeration).get(checkpoint);
 module.exports = Register;
