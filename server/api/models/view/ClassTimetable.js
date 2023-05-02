@@ -22,7 +22,7 @@ const ClassTimetableSchema = new mongoose.Schema(
         },
       },
     ],
-    classroomno: [
+    classrooms: [
       {
         id: {
           type: String,
@@ -31,6 +31,11 @@ const ClassTimetableSchema = new mongoose.Schema(
         no: {
           type: String,
           required: true,
+        },
+        type: {
+          type: String,
+          required: true,
+          enum: ["Classroom", "Lab"],
         },
       },
     ],

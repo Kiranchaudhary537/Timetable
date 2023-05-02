@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
+import AXIOS from "../../api/AXIOS";
 const Register = () => {
   const navigate = useNavigate();
   const [formErrors, setFormErrors] = useState({});
@@ -65,21 +66,23 @@ const Register = () => {
   useEffect(() => {
     if (Object.keys(formErrors).length === 0 && isSubmit) {
       console.log(user);
-      axios
-        .post(`${API_URL}/example`, user, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-        .then((response) => {
-          localStorage.setItem("user", response.token);
-          localStorage.setItem("role", response.role);
-          navigate("/login", { replace: true });
-        })
-        .catch((error) => {
-          setVerifiedError(true);
-          console.error(error);
-        });
+      // axios
+      //   .post(`${API_URL}/example`, user, {
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //   })
+      //   .then((response) => {
+
+      //     navigate("/login", { replace: true });
+      //   })
+      //   .catch((error) => {
+      //     setVerifiedError(true);
+      //     console.error(error);
+      //   });
+      AXIOS.post("/signup", user).then((res) => {
+        navigate("/login", { replace: true });
+      });
       // axios.post("http://localhost:3000/signup", user).then((res) => {
       //   alert(res.data.message);
       //   navigate("/login", { replace: true });

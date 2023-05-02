@@ -3,12 +3,12 @@ const mongoose = require("mongoose");
 const TimeSlot = require("../models/TimeSlot");
 
 const addTimeSlot = async (req, res, next) => {
-  const { starttime, endtime, day } = req.body;
+  const { startTime, endTime, day } = req.body;
   console.log(req.body);
 
   const timeslot = new TimeSlot({
-    starttime: starttime,
-    endtime: endtime,
+    starttime: startTime,
+    endtime: endTime,
     day: day,
     updatedAt: Date.now(),
   });

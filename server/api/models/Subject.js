@@ -11,8 +11,17 @@ const SubjectSchema = new mongoose.Schema(
       require: true,
     },
     semester: {
-      role: String,
-      id: { type: mongoose.Schema.Types.ObjectId, ref: "Class" },
+      type: Number,
+      require: true,
+    },
+    min: {
+      type: Number,
+      default: 0,
+      require: true,
+    },
+    max: {
+      type: Number,
+      require: true,
     },
     updatedAt: {
       type: Date,

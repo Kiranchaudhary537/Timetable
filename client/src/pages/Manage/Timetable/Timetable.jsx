@@ -2,9 +2,9 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import CSVManage from "./CSVManage";
 import { ClassroomModal, TimeslotsModal } from "./Model";
-import { UpdatedClassroomState } from "../../Utils/UpdatedClassroomState";
-import { ClearTimetableFields } from "../../Utils/UpdateTimetable";
-import { updateFaculty, updateSubject } from "../../Utils/UpdateSlot";
+import { UpdatedClassroomState } from "../../../Utils/UpdatedClassroomState";
+import { ClearTimetableFields } from "../../../Utils/UpdateTimetable";
+import { updateFaculty, updateSubject } from "../../../Utils/UpdateSlot";
 
 // function updateSubject(day, slotId, newSlotData, setTimetable) {
 //   console.log("newslot", newSlotData);
@@ -217,47 +217,49 @@ const getDayIndex = (day) => {
 //     });
 //   });
 // }
+
+
 function updateFacultyState(timetable, faculty, setFaculty, day, slot, i, j) {
-  setFaculty((prevState) => {
-    const index = prevState.findIndex((item) => item.name == slot.Faculty);
+    setFaculty((prevState) => {
+      const index = prevState.findIndex((item) => item.name == slot.Faculty);
 
-    if (index > 0) {
-      let updatedFaculty = [...prevState];
-      let updatedDays = updatedFaculty[index];
-      let updatedDay = updatedDays.days[i];
-      console.log(updatedDay.day);
-      let updatedTimeslot = updatedDay.timeslots[j];
-      updatedTimeslot.Subject = slot.Subject;
-      updatedTimeslot.Semester = timetable.semester;
-      updatedTimeslot.Division = timetable.division;
-      updatedDay.timeslots[j] = updatedTimeslot;
-      updatedDays.days[i] = updatedDay;
-      updatedFaculty[index] = updatedDays;
-      console.log(updatedFaculty[index]);
-      // setFaculty(() => {
-      return updatedFaculty;
-      // });
-    } else {
-      let updatedFaculty = {
-        name: slot.Faculty,
-        days: faculty[0].days,
-      };
+      if (index > 0) {
+        let updatedFaculty = [...prevState];
+        let updatedDays = updatedFaculty[index];
+        let updatedDay = updatedDays.days[i];
+        console.log(updatedDay.day);
+        let updatedTimeslot = updatedDay.timeslots[j];
+        updatedTimeslot.Subject = slot.Subject;
+        updatedTimeslot.Semester = timetable.semester;
+        updatedTimeslot.Division = timetable.division;
+        updatedDay.timeslots[j] = updatedTimeslot;
+        updatedDays.days[i] = updatedDay;
+        updatedFaculty[index] = updatedDays;
+        console.log(updatedFaculty[index]);
+        // setFaculty(() => {
+        return updatedFaculty;
+        // });
+      } else {
+        let updatedFaculty = {
+          name: slot.Faculty,
+          days: faculty[0].days,
+        };
 
-      let updatedDay = updatedFaculty.days[i];
-      console.log(updatedDay.day);
-      let updatedTimeslot = updatedDay.timeslots[j];
-      updatedTimeslot.Subject = slot.Subject;
-      updatedTimeslot.Semester = timetable.semester;
-      updatedTimeslot.Division = timetable.division;
-      updatedDay.timeslots[j] = updatedTimeslot;
-      updatedFaculty.days[i] = updatedDay;
+        let updatedDay = updatedFaculty.days[i];
+        console.log(updatedDay.day);
+        let updatedTimeslot = updatedDay.timeslots[j];
+        updatedTimeslot.Subject = slot.Subject;
+        updatedTimeslot.Semester = timetable.semester;
+        updatedTimeslot.Division = timetable.division;
+        updatedDay.timeslots[j] = updatedTimeslot;
+        updatedFaculty.days[i] = updatedDay;
 
-      // setFaculty((prevState) => {
+        // setFaculty((prevState) => {
 
-      return [...prevState, updatedFaculty];
-      // });
-    }
-  });
+        return [...prevState, updatedFaculty];
+        // });
+      }
+    });
 }
 function ClearFacultyState(timetable, setFaculty, day, slot, i, j) {
   setFaculty((prevState) => {
@@ -1719,6 +1721,7 @@ export default function ManageTimetable() {
       ],
     },
   ]);
+  
   const [edit, setEdit] = useState({
     edit: false,
     day: "",
@@ -1885,6 +1888,7 @@ export default function ManageTimetable() {
             <select
               onChange={(e) => {
                 setTimetable((prevState) => {
+                  
                   if (e.target.value == "Select Class") {
                     return prevState;
                   }
@@ -2106,13 +2110,13 @@ export default function ManageTimetable() {
 
         <TimeslotsModal
           showModal={showTimeslotModal}
-          setData={setSlots}
+          // setData={setSlots}
           setShowModal={setShowTimeslotModal}
         />
         <ClassroomModal
           showModal={showClassroomModal}
           data={classroomno}
-          setData={setRoomNo}
+          // setData={setRoomNo}
           setShowModal={setShowClassroomModal}
         />
       </div>

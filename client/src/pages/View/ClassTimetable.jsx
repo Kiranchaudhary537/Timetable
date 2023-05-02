@@ -75,6 +75,7 @@ const Data2 = [
   },
 ];
 
+
 export default function ClassTimetable() {
   const [data, setData] = useState([]);
   const [data1, setData1] = useState([]);

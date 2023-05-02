@@ -9,11 +9,9 @@ const ClassroomModel = ({ title, showModal, setShowModal, setData }) => {
   const [no, setNo] = useState("");
   const [type, setType] = useState("");
   useEffect(() => {
-    if (showModal) {
-      setNo("");
-      setType("");
-    }
-  }, [showModal]);
+    setNo("");
+    setType("");
+  }, []);
 
   const handleDone = () => {
     if (no.trim() == "" || type.trim() == "") {
@@ -31,8 +29,8 @@ const ClassroomModel = ({ title, showModal, setShowModal, setData }) => {
           console.log("success");
           setType("");
           setNo("");
-          setData([]);
           setShowModal(false);
+          setData([]);
         })
         .catch((e) => {
           setShowModal(false);
@@ -79,7 +77,6 @@ const ClassroomModel = ({ title, showModal, setShowModal, setData }) => {
                 type="text"
                 class="border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 onChange={(e) => {
-                 
                   setNo(e.target.value.trim().trimStart().toUpperCase());
                 }}
                 placeholder="26 or 6"

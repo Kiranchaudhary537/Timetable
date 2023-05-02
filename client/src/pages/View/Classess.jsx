@@ -25,7 +25,7 @@ const Data = [
 export default function Classess() {
   const randomBetween = (min, max) =>
     min + Math.floor(Math.random() * (max - min + 1));
-  const width = Math.floor(window.innerWidth / 15);
+  const width = Math.floor(window.innerWidth / 20);
 
   const [data, setData] = useState([]);
 

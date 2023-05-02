@@ -3,7 +3,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 export default function Faculties() {
-  const width = Math.floor(window.innerWidth / 15);
+  const width = Math.floor(window.innerWidth / 20);
 
   const [data, setData] = useState([]);
 
@@ -31,9 +31,6 @@ export default function Faculties() {
   return (
     <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 auto-cols-fr	">
       {data.map((e) => {
-        //console.log(e.days[0].day);
-        // return e.days.map((e) => {
-        //   return e.day == dayName ? (
         return (
           <Link to={`${e.name}`} state={e}>
             <div className="flex justify-center">

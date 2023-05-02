@@ -35,7 +35,7 @@ const getTimetableById = async (req, res) => {
 const getTimetableByName = async (req, res) => {
   const semester = req.query.semester;
   const division = req.query.division;
-
+  console.log(semester + division);
   await ClassTimetable.findOne({
     semester: semester,
     division: division,

@@ -34,29 +34,27 @@ const Data = [
     division: "H",
   },
 ];
+
 export default function Classrooms() {
-  const width = Math.floor(window.innerWidth / 15);
+  const width = Math.floor(window.innerWidth / 20);
   const [data, setData] = useState([]);
 
   useEffect(() => {
     axios.get("http://localhost:3000/v1/getclassroomtimetable").then((res) => {
       setData(res.data.message);
+      console.log(res.data.message);
     });
-    console.log(data);
   }, []);
 
   return (
     <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 auto-cols-fr	">
       {data.map((e) => {
         return (
-          <Link to={`${e._id}`}>
+          <Link to={`no=${e.no}&type=${e.type}`} state={e}>
             <div className="flex justify-center">
               <div className="block max-w-sm rounded-lg bg-white p-6 shadow-lg dark:bg-lime-700">
                 <div className="flex flex-row flex-nowrap m-3 ">
                   <div className="mx-6">
-                    {/* <h5 className="mb-2 text-xl font-medium leading-tight text-neutral-800 dark:text-neutral-50">
-                      I.T.
-                    </h5> */}
                     <h5 className="mb-2 text-xl font-medium leading-tight text-neutral-800 dark:text-neutral-50">
                       Classroom
                     </h5>

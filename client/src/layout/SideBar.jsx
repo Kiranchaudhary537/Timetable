@@ -11,17 +11,16 @@ import { TbCalendarTime } from "react-icons/tb";
 import { FiPieChart } from "react-icons/fi";
 import { GrMail } from "react-icons/gr";
 import { FiSettings } from "react-icons/fi";
-import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
 
-export default function SideBar({ setHeaderTitle }) {
-  const navigate = useNavigate();
-  const role = Cookies.get("role");
-  console.log(role);
-
-  const goToLogin = () => {
-    navigate("/login");
-  };
+export default function SideBar() {
+  const userRole = localStorage.getItem("userRole")
+    ? localStorage.getItem("userRole")
+    : "";
+  
+  const logOut = () => {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("userRole");
+  }
   return (
     <>
       <button
@@ -79,46 +78,49 @@ export default function SideBar({ setHeaderTitle }) {
             </Link>
           </div>
 
-          <ul className="space-y-3 mt-8">
-            <span className="">View Timetable</span>
-            <li>
-              {/* <Link
-                to="/dashboard"
-                 className={({ isActive }) =>
+          {userRole == "ADMIN" ||
+          userRole == "COORDINATOR" ||
+          userRole == "FACULTY" ||
+          userRole == "STUDENT" ? (
+            <ul className="space-y-3 mt-8">
+              <span className="">View Timetable</span>
+              <li>
+                <NavLink
+                  to="/dashboard"
+                  className={({ isActive }) =>
                     isActive
                       ? "flex items-center p-2 text-base font-normal  rounded-lg  bg-gray-700 text-white font-bold"
                       : "flex items-center p-2 text-base font-normal  rounded-lg  hover:text-white hover:bg-gray-100 hover:bg-gray-700"
                   }
-              > */}
-              <NavLink
-                to="/dashboard"
-                className={({ isActive }) =>
-                  isActive
-                    ? "flex items-center p-2 text-base font-normal  rounded-lg  bg-gray-700 text-white font-bold"
-                    : "flex items-center p-2 text-base font-normal  rounded-lg  hover:text-white hover:bg-gray-100 hover:bg-gray-700"
-                }
-              >
-                <MdDashboard size={24} />
-                <span className="ml-3">Dashboard</span>
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/classtimetable"
-                className={({ isActive }) =>
-                  isActive
-                    ? "flex items-center p-2 text-base font-normal  rounded-lg  bg-gray-700 text-white font-bold"
-                    : "flex items-center p-2 text-base font-normal  rounded-lg  hover:text-white hover:bg-gray-100 hover:bg-gray-700"
-                }
-              >
-                <SiGoogleclassroom size={24} />
-                <span className="flex-1 ml-3 whitespace-nowrap">
-                  Class Timetable
-                </span>
-              </NavLink>
-            </li>
-          </ul>
-          {role == "FACULTY" || role == "COORDINATOR" || role == "ADMIN" ? (
+                >
+                  <MdDashboard size={24} />
+                  <span className="ml-3">Dashboard</span>
+                </NavLink>
+              </li>
+
+              <li>
+                <NavLink
+                  to="/classtimetable"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "flex items-center p-2 text-base font-normal  rounded-lg  bg-gray-700 text-white font-bold"
+                      : "flex items-center p-2 text-base font-normal  rounded-lg  hover:text-white hover:bg-gray-100 hover:bg-gray-700"
+                  }
+                >
+                  <SiGoogleclassroom size={24} />
+                  <span className="flex-1 ml-3 whitespace-nowrap">
+                    Class Timetable
+                  </span>
+                </NavLink>
+              </li>
+            </ul>
+          ) : (
+            <></>
+          )}
+
+          {userRole == "ADMIN" ||
+          userRole == "COORDINATOR" ||
+          userRole == "FACULTY" ? (
             <ul>
               <li>
                 <NavLink
@@ -135,9 +137,8 @@ export default function SideBar({ setHeaderTitle }) {
                   </span>
                 </NavLink>
               </li>
-              {/* <li>
+              <li>
                 <NavLink
-
                   to="/classroomtimetable"
                   className={({ isActive }) =>
                     isActive
@@ -167,7 +168,13 @@ export default function SideBar({ setHeaderTitle }) {
                     Occupancy
                   </span>
                 </NavLink>
-              </li> */}
+              </li>
+            </ul>
+          ) : (
+            <></>
+          )}
+          {userRole == "ADMIN" || userRole == "COORDINATOR" ? (
+            <ul>
               <li>
                 <NavLink
                   to="/currentfacultyavailability"
@@ -189,7 +196,8 @@ export default function SideBar({ setHeaderTitle }) {
           ) : (
             <></>
           )}
-          {role == "COORDINATOR" ? (
+
+          {userRole == "COORDINATOR" ? (
             <ul className="space-y-3 mt-4">
               <span className="">Manage Timetable</span>
               <li>
@@ -224,11 +232,12 @@ export default function SideBar({ setHeaderTitle }) {
           ) : (
             <></>
           )}
+
           <ul>
             <li>
               <NavLink
-                // onClick={goToLogin()}
-                to="/classtimetable"
+               onClick={()=>{logOut()}}
+                to="/login"
                 className="flex items-center p-2 text-red-500 text-base font-normal  rounded-lg  hover:text-red-500 hover:bg-red-100 dark:hover:bg-gray-700"
               >
                 <svg

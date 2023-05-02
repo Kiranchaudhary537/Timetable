@@ -37,7 +37,8 @@ const addOrUpdateTimetable = async (req, res, next) => {
       division: req.body.timetable.division,
       days: req.body.timetable.days,
       timeslots: req.body.timeslots,
-      classroomno: req.body.classroomno,
+      classrooms: req.body.classrooms,
+     
     },
     { upsert: true, minimize: false, new: true }
   )

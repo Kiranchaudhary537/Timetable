@@ -3,11 +3,14 @@ const mongoose = require("mongoose");
 const Subject = require("../models/Subject");
 
 const addSubject = async (req, res, next) => {
-  const { name, short_form, semester } = req.body;
+  const { name, short_form, semester,min,max } = req.body;
+  console.log(semester);
   const subject = new Subject({
     name: name,
     short_form: short_form,
     semester: semester,
+    min: min,
+    max:max,
     updatedAt: Date.now(),
   });
   await subject

@@ -1,71 +1,81 @@
 import axios from "axios";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
+import TimeKeeper from "react-timekeeper";
 import { Table, Column, HeaderCell, Cell } from "rsuite-table";
-
 import "rsuite-table/dist/css/rsuite-table.css";
 import { MdDeleteForever, MdOutlineSearch } from "react-icons/md";
 
-const Data = [
-  {
-    id: 1,
-    name: "vipul dabhi",
-    short_form: "v.d",
-    subjects: ["A.J.T", "A.O.S"],
-  },
-  {
-    id: 2,
-    name: "harshad prajapti",
-    short_form: "h.d.p",
-    subjects: ["c.j.t", "d.a.pf"],
-  },
-  {
-    id: 3,
-    name: "vipul dabhi",
-    short_form: "S.K.V",
-    subjects: ["mapi", "se"],
-  },
-];
+const BaseCell = React.forwardRef((props, ref) => {
+  const { children, rowData, ...rest } = props;
+  return (
+    <Cell
+      ref={ref}
+      rowData={rowData}
+      onDoubleClick={() => {
+        console.log(rowData);
+      }}
+      {...rest}
+    >
+      {children}
+    </Cell>
+  );
+});
 
-const FacultyModal = ({ title, showModal, setShowModal, setData }) => {
+const CheckCell = ({ rowData, onChange, checkedKeys, dataKey, ...props }) => {
+  return (
+    <BaseCell {...props} style={{ padding: 0 }}>
+      <div style={{ lineHeight: "46px" }}>
+        <input
+          type="checkbox"
+          value={rowData[dataKey]}
+          onChange={onChange}
+          checked={checkedKeys.some((item) => item == rowData[dataKey])}
+        />
+      </div>
+    </BaseCell>
+  );
+};
+
+const TimeSlotModal = ({ title, showModal, setShowModal, setData }) => {
   const handleCloseModal = () => setShowModal(false);
-  const [name, setName] = useState("");
-  const [short_form, setShortForm] = useState("");
-  const [subject, setSubject] = useState("");
-  const [subjects, setSubjects] = useState([]);
+  const [day, setDay] = useState("Monday");
+  const [endTime, setEndTime] = useState("");
+  const [startTime, setStartTime] = useState("");
+  const [showTime1, setShowTime1] = useState(false);
+  const [showTime2, setShowTime2] = useState(false);
   useEffect(() => {
     if (showModal) {
-      setName("");
-      setShortForm("");
-      setSubject("");
+      setDay("");
+      setStartTime("");
+      setEndTime("");
     }
   }, [showModal]);
+
   const handleDone = () => {
-    if (name.trim() == "" || short_form.trim() == "" || subject.trim() == "") {
+    console.log(startTime + " end " + endTime + " day " + day);
+
+    if (startTime.trim() == "" || endTime.trim() == "" || day.trim() == "") {
       alert("Enter data before submit");
-      setName("");
-      setShortForm("");
-      setSubject("");
-      setSubjects([]);
+      setDay("");
+      setStartTime("");
+      setEndTime("");
       setShowModal(false);
     } else {
       axios
-        .post("http://localhost:3000/v1/manageresource/faculty", {
-          name,
-          short_form,
-          subject,
+        .post("http://localhost:3000/v1/manageresource/timeslot", {
+          day,
+          startTime,
+          endTime,
         })
         .then((e) => {
           console.log("success");
-          setName("");
-          setShortForm("");
-          setSubject("");
+          setDay("");
+          setStartTime("");
+          setEndTime("");
           setData([]);
           setShowModal(false);
         })
         .catch((e) => {
-          setName("");
-          setShortForm("");
-          setSubject("");
           setShowModal(false);
         });
     }
@@ -101,49 +111,84 @@ const FacultyModal = ({ title, showModal, setShowModal, setData }) => {
           </div>
           <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
             <div class="flex flex-col space-y-4">
-              <label for="name" class="text-lg font-medium">
-                Name
-              </label>
-              <input
-                id="Name"
-                name="Name"
-                type="text"
-                class="border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                onChange={(e) =>
-                  setName(e.target.value.trim().trimStart().toUpperCase())
-                }
-                placeholder="Start with time then A.M or P.M Ex. 10:00 A.M"
-              />
-              <label for="short_fomr" class="text-lg font-medium">
-                Short Form
-              </label>
+              {/* For Day */}
 
-              <input
-                id="short_fomr"
-                name="short_fomr"
-                type="text"
-                class="border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                onChange={(e) =>
-                  setShortForm(e.target.value.trim().trimStart().toUpperCase())
-                }
-                placeholder="Start with time then A.M or P.M Ex. 10:00 A.M"
-              />
-
-              <label for="subjects" class="text-lg font-medium">
-                Subjects
+              <label for="day" class="text-lg font-medium">
+                Day
               </label>
-              <input
-                id="subjects"
-                name="subjects"
-                type="text"
-                class="border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              <select
+                id="days"
                 onChange={(e) => {
-                  setSubject(e.target.value.trim().trimStart().toUpperCase());
+            
+                  setDay(e.target.value);
                 }}
-                placeholder="Start with time then A.M or P.M Ex. 10:30 A.M"
-              />
+                class="border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              >
+                
+                <option value="Day">Day</option>
+                <option value="Monday">Monday</option>
+                <option value="Tuesday">Tuesday</option>
+                <option value="Wednesday">Wednesday</option>
+                <option value="Thursday">Thursday</option>
+                <option value="Friday">Friday</option>
+                <option value="Saturday">Saturday</option>
+              </select>
+
+              {/* start Time  */}
+              <label for="startTime" class="text-lg font-medium">
+                Start Time
+              </label>
+              <div>
+                {showTime1 && (
+                  <TimeKeeper
+                    onChange={(newTime) => setStartTime(newTime.formatted12)}
+                    onDoneClick={() => setShowTime1(false)}
+                    switchToMinuteOnHourSelect
+                  />
+                )}
+                {!showTime1 && (
+                  <div
+                    className="border border-gray-300  rounded-md shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    onClick={() => setShowTime1(true)}
+                  >
+                    {startTime != "" ? (
+                      <p className="text-xl">{startTime}</p>
+                    ) : (
+                      <p className="text-xl">Select start Time</p>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {/* End time select */}
+              <label for="endTime" class="text-lg font-medium">
+                End Time
+              </label>
+              <div>
+                {showTime2 && (
+                  <TimeKeeper
+                    onChange={(newTime) => setEndTime(newTime.formatted12)}
+                    onDoneClick={() => setShowTime2(false)}
+                    switchToMinuteOnHourSelect
+                  />
+                )}
+                {!showTime2 && (
+                  <div
+                    className="border border-gray-300  rounded-md shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    onClick={() => setShowTime2(true)}
+                  >
+                    {endTime != "" ? (
+                      <p className="text-xl">{endTime}</p>
+                    ) : (
+                      <p className="text-xl">Select End Time</p>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
+
+          {/* Button for Done and Close */}
           <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
             <button
               type="button"
@@ -165,55 +210,31 @@ const FacultyModal = ({ title, showModal, setShowModal, setData }) => {
     </div>
   );
 };
-const BaseCell = React.forwardRef((props, ref) => {
-  const { children, rowData, ...rest } = props;
-  return (
-    <Cell
-      ref={ref}
-      rowData={rowData}
-      onDoubleClick={() => {
-        console.log(rowData);
-      }}
-      {...rest}
-    >
-      {children}
-    </Cell>
-  );
-});
 
-const CheckCell = ({ rowData, onChange, checkedKeys, dataKey, ...props }) => {
-  return (
-    <BaseCell {...props} style={{ padding: 0 }}>
-      <div style={{ lineHeight: "46px" }}>
-        <input
-          type="checkbox"
-          value={rowData[dataKey]}
-          onChange={onChange}
-          checked={checkedKeys.some((item) => item === rowData[dataKey])}
-        />
-      </div>
-    </BaseCell>
-  );
-};
-
-const CustomSubjectCell = ({ rowData, dataKey, ...props }) => {
-  const subjects = rowData.subjects.join(', ');
-  return <Cell {...props}>{subjects}</Cell>;
-};
-export default function Faculty() {
+export default function Timeslots() {
   const [data, setData] = useState([]);
-  const [checkedKeys, setCheckedKeys] = useState([]);
   const [tempData, setTempData] = useState([]);
   const [isSearching, setSearching] = useState(false);
   const [searchInput, setsearchInput] = useState("");
+  const [checkedKeys, setCheckedKeys] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const handleShowModal = () => setShowModal(true);
 
+  const handleShowModal = () => setShowModal(true);
   useEffect(() => {
-    axios.get("http://localhost:3000/v1/manageresource/faculty").then((res) => {
-      setData(res.data.res);
-    });
+    axios
+      .get("http://localhost:3000/v1/manageresource/timeslot")
+      .then((res) => {
+        setData(res.data.res);
+        console.log(res.data.res);
+      });
   }, [data.length]);
+  useEffect(() => {
+    if (searchInput.trim() == "") {
+      setSearching(false);
+      setTempData([]);
+    } else {
+    }
+  }, [searchInput]);
 
   const handleCheckAll = (event) => {
     const checked = event.target.checked;
@@ -234,7 +255,7 @@ export default function Faculty() {
   );
   const handleDelete = async () => {
     await axios
-      .patch("http://localhost:3000/v1/manageresource/faculty", checkedKeys)
+      .patch("http://localhost:3000/v1/manageresource/timeslot", checkedKeys)
       .then((e) => {
         setData(data.filter((elem) => !checkedKeys.includes(elem._id)));
         setCheckedKeys([]);
@@ -243,14 +264,15 @@ export default function Faculty() {
         console.log(e);
       });
   };
+
   const handleSearch = () => {
     setTempData(data);
     setSearching(true);
     const filteredData = data.filter((item) => {
       return (
-        item.short_form.toLowerCase().includes(searchInput.toLowerCase()) ||
-        item.name.toLowerCase().includes(searchInput.toLowerCase()) ||
-        item.subjects.toLowerCase().includes(searchInput.toLowerCase())
+        item.day.toLowerCase().includes(searchInput.toLowerCase()) ||
+        item.startTime.toLowerCase().includes(searchInput.toLowerCase()) ||
+        item.endTime.toLowerCase().includes(searchInput.toLowerCase())
       );
     });
 
@@ -259,58 +281,6 @@ export default function Faculty() {
   };
   return (
     <>
-      {/* <div className="w-full">
-        <div className="flex justify-center h-screen w-full">
-          <div className="border w-9/12 mt-16" style={{ height: `${28}rem` }}>
-            <div className="flex flex-row justify-start">
-              {data.length > 0 ? (
-                <div
-                  onClick={() => handleDelete()}
-                  className="m-2 flex flex-row"
-                >
-                  <MdDeleteForever size={28} color={"red"} />
-                </div>
-              ) : (
-                <></>
-              )}
-            </div>
-            <Table data={Data}>
-              <Column width={50} align="center">
-                <HeaderCell style={{ padding: 0 }}>
-                  <div style={{ lineHeight: "40px" }}>
-                    <input
-                      type="checkbox"
-                      onChange={handleCheckAll}
-                      checked={checkedKeys.length === data.length}
-                    />
-                  </div>
-                </HeaderCell>
-                <CheckCell
-                  dataKey="_id"
-                  checkedKeys={checkedKeys}
-                  onChange={handleCheck}
-                />
-              </Column>
-              <Column width={70} fullText>
-                <HeaderCell>Id</HeaderCell>
-                <Cell dataKey="id" />
-              </Column>
-              <Column flexGrow={1}>
-                <HeaderCell>Name</HeaderCell>
-                <Cell dataKey="name" />
-              </Column>
-              <Column flexGrow={1}>
-                <HeaderCell>Short Form</HeaderCell>
-                <Cell dataKey="short_form" />
-              </Column>
-              <Column flexGrow={1}>
-                <HeaderCell>Subject</HeaderCell>
-                <SubjectCell dataKey="short_form" />
-              </Column>
-            </Table>
-          </div>
-        </div>
-      </div> */}
       <div className="w-full">
         <div className="  flex justify-center h-screen w-full">
           <div className="border w-9/12 mt-16" style={{ height: `${28}rem` }}>
@@ -347,7 +317,7 @@ export default function Faculty() {
                   onClick={handleShowModal}
                   class=" p-2 mx-auto my-2 text-white bg-blue-600 rounded hover:bg-blue-700 md:mx-0 font-semibold"
                 >
-                  Add New Subject
+                  Add New TimeSlots
                 </button>
               </div>
             </div>
@@ -371,19 +341,24 @@ export default function Faculty() {
                 </Column>
                 <Column width={70} fullText>
                   <HeaderCell>Id</HeaderCell>
-                  <Cell dataKey="id" />
+                  <Cell dataKey="_id" />
                 </Column>
                 <Column flexGrow={1}>
-                  <HeaderCell>Name</HeaderCell>
-                  <Cell dataKey="name" />
+                  <HeaderCell>day</HeaderCell>
+                  <Cell dataKey="day" />
                 </Column>
                 <Column flexGrow={1}>
-                  <HeaderCell>Short Form</HeaderCell>
-                  <Cell dataKey="short_form" />
+                  <HeaderCell>start time</HeaderCell>
+                  <Cell dataKey="starttime" />
                 </Column>
                 <Column flexGrow={1}>
-                  <HeaderCell>Subject</HeaderCell>
-                  <CustomSubjectCell dataKey="short_form" />
+                  <HeaderCell>end time</HeaderCell>
+                  <Cell dataKey="endtime" />
+                </Column>
+                <Column>
+                  <HeaderCell></HeaderCell>
+                  <Cell></Cell>
+                  <MdDeleteForever />
                 </Column>
               </Table>
             ) : (
@@ -409,26 +384,30 @@ export default function Faculty() {
                   <Cell dataKey="_id" />
                 </Column>
                 <Column flexGrow={1}>
-                  <HeaderCell>Name</HeaderCell>
-                  <Cell dataKey="name" />
+                  <HeaderCell>day</HeaderCell>
+                  <Cell dataKey="day" />
                 </Column>
                 <Column flexGrow={1}>
-                  <HeaderCell>Short Form</HeaderCell>
-                  <Cell dataKey="short_form" />
+                  <HeaderCell>start time</HeaderCell>
+                  <Cell dataKey="starttime" />
                 </Column>
                 <Column flexGrow={1}>
-                  <HeaderCell>Subject</HeaderCell>
-                  <CustomSubjectCell dataKey="subjects" />
+                  <HeaderCell>end time</HeaderCell>
+                  <Cell dataKey="endtime" />
+                </Column>
+                <Column>
+                  <HeaderCell></HeaderCell>
+                  <Cell></Cell>
                 </Column>
               </Table>
             )}
           </div>
         </div>
       </div>
-      <FacultyModal
+      <TimeSlotModal
         showModal={showModal}
         setDate={setData}
-        title={"Add New Faculty"}
+        title={"Add New TimeSlots"}
         setShowModal={setShowModal}
       />
     </>

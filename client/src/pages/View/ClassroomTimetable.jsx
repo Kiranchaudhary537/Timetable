@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import { Table, Column, HeaderCell, Cell } from "rsuite-table";
 import "rsuite-table/dist/css/rsuite-table.css";
 
@@ -76,85 +76,72 @@ const Data2 = [
   },
 ];
 
-export default function ClassroomTimetable() {
+export default function ClassroomTimetable({ state }) {
+  const location = useLocation();
+  const propsData = location.state;
   const [data, setData] = useState([]);
-  const { ClassroomId } = useParams();
+  const [data1, setData1] = useState([]);
+  // const { FacultyId } = useParams();
+  console.log(propsData);
   useEffect(() => {
-    axios
-      .get("http://localhost:3000/v1/getclassroomtimetable/" + ClassroomId)
-      .then((res) => {
-        setData(res.data.message.days);
-        // setData(Data2);
-        // console.log(res.data.message);
-      });
+    setData(propsData.days);
+    setData1(propsData.timeslots);
   }, []);
   return (
     <>
-      <div className="flex justify-center h-screen w-full">
-        <div className="w-full mt-16">
-          <Table data={data}>
-            <Column flexGrow={1}>
-              <HeaderCell>Day</HeaderCell>
-              <Cell dataKey="day" />
-            </Column>
-            {data.map((e) => {
-              return e.timeslots.map((e) => {
-                console.log(e);
-                return (
-                  <Column flexGrow={1} fullText>
-                    <HeaderCell>{e.Timeslot}</HeaderCell>
-
-                    <Cell>
-                      {(rowData, rowIndex) => {
-                        return <p>{e.Subject}</p>;
-                      }}
-                    </Cell>
-                  </Column>
-                );
-              });
-              // <p>{e.Timeslot}</p>
+      {data.length > 0 ? (
+        <div className="flex justify-center h-screen w-full">
+          <div className="w-full mt-16">
+            <table id="timetable" className="border m-2 ">
+              <thead>
+                <tr>
+                  {propsData.timeslots.map((e) => {
+                    return (
+                      <th
+                        align="center"
+                        className="border"
+                        style={{ width: "150px", minWidth: "70px" }}
+                      >
+                        {e.timeslot}
+                      </th>
+                    );
+                  })}
+                </tr>
+              </thead>
+              <tbody>
+                {propsData.days.map((e) => {
+                  console.log(e);
+                  return (
+                    <tr>
+                      <td align="center" className="border">
+                        {e.day}
+                      </td>
+                      {e.timeslots.map((ele) => {
+                        return (
+                          <td align="center" className="border">
+                            {ele.Subject}
+                            <br />
+                            {ele.Semester} {ele.Division}
+                            <br />
+                            {ele.Faculty}
+                            <br />
+                            
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+            {data1.map((e) => {
+              <p>{e.Subject}</p>;
             })}
-          </Table>
-          {/* <Table data={Data2[0].days}>
-            <Column>
-              <HeaderCell>Day</HeaderCell>
-              <Cell dataKey="day" />
-            </Column>
-            <Column flexGrow={1} fullText>
-              <HeaderCell>8:30 A.M To 10:30 A.M</HeaderCell>
-              <Cell dataKey="slots[0].sub" />
-            </Column>
-            <Column flexGrow={1}>
-              <HeaderCell>10:30 A.M To 10:45 A.M</HeaderCell>
-              <Cell dataKey="slots[1].sub" />
-            </Column>
-            <Column flexGrow={1}>
-              <HeaderCell>10:45 A.M To 11:45 A.M</HeaderCell>
-              <Cell dataKey="" />
-            </Column>
-            <Column flexGrow={1}>
-              <HeaderCell>11:45 A.M To 12:45 A.M</HeaderCell>
-              <Cell dataKey="" />
-            </Column>
-            <Column flexGrow={1}>
-              <HeaderCell>01:30 A.M To 02:30 A.M</HeaderCell>
-              <Cell dataKey="" />
-            </Column>
-            <Column flexGrow={1}>
-              <HeaderCell>02:30 A.M To 03:30 A.M</HeaderCell>
-              <Cell dataKey="" />
-            </Column>
-            <Column flexGrow={1}>
-              <HeaderCell>03:30 A.M To 04:30 A.M</HeaderCell>
-              <Cell dataKey="" />
-            </Column>
-            <Column flexGrow={1}>
-              <HeaderCell>04:30 A.M To 05:30 A.M</HeaderCell>
-              <Cell dataKey="" />
-            </Column>
-          </Table> */}
+          </div>
         </div>
-      </div>
+      ) : (
+        <p>rendering</p>
+      )}
     </>
   );
 }

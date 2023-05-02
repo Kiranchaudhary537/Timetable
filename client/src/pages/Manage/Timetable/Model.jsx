@@ -1,5 +1,11 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { updateTimeslot } from "../../../features/timetable/timeslotSlice";
+import { updateClassroom } from "../../../features/timetable/classroomsSlice";
+import { createClassroom } from "../../../features/timetable/classSlice";
+import AXIOS from "../../../api/AXIOS";
+
 export const TimeSlotModal = ({ title, showModal, setShowModal, setData }) => {
   const handleCloseModal = () => setShowModal(false);
   const [day, setDay] = useState("");
@@ -256,46 +262,47 @@ export const SubjectModal = ({ title, showModal, setShowModal, setData }) => {
     </div>
   );
 };
-const dataoftimeslots = [
-  { starttime: "8:30 A.M.", endtime: "9:30 A.M.", id: 1 },
-  { starttime: "9:30 A.M.", endtime: "10:30 A.M.", id: 2 },
-  { starttime: "11:45 P.M.", endtime: "12:45 P.M.", id: 3 },
-  { starttime: "1:30 P.M.", endtime: "2:30 P.M.", id: 4 },
-  { starttime: "2:30 P.M.", endtime: "3:30 P.M.", id: 5 },
-  { starttime: "3:30 P.M.", endtime: "4:30 P.M.", id: 6 },
-  { starttime: "4:30 P.M.", endtime: "5:30 P.M.", id: 7 },
-];
+
 const dataofroom = [
-  { no: "1", type: "Lab", id: 1 },
-  { no: "26", type: "Classroom", id: 2 },
-  { no: "6", type: "Classroom", id: 3 },
-  { starttime: "2", type: "Lab", id: 4 },
+  { no: "1", type: "Lab" },
+  { no: "26", type: "Classroom" },
+  { no: "6", type: "Classroom" },
+  { no: "2", type: "Lab" },
 ];
 
-export function TimeslotsModal({ setData, setShowModal, showModal }) {
-  const [modelData, setModalData] = useState([{ id: "", timeslot: "" }]);
+export function TimeslotsModal({ setShowModal, showModal }) {
+  const [modelData, setModalData] = useState([]);
   const [changeData, setChangeData] = useState({ id: "", timeslot: "" });
+
+  // useEffect( () => {
+  //   await axios
+  //     .get("http://localhost:3000/v1/manageresource/timeslot")
+  //     .then((e) => {
+  //       // setModalData(e.res);
+  //       console.log(e.res);
+  //     });
+  // }, []);
+
   useEffect(() => {
-    setModalData(dataoftimeslots);
-  }, [modelData.length]);
+    async function fetchData() {
+      axios
+        .get("http://localhost:3000/v1/manageresource/timeslot")
+        .then((response) => {
+          setModalData(response.data.res);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+    fetchData();
+  }, []);
 
+  const dispatch = useDispatch();
   const handleSave = () => {
-    setData((prevState) => {
-      return prevState.map((item) => {
-        console.log(item);
-        if (item.id == changeData.id) {
-          return {
-            ...item,
-            timeslot: changeData.timeslot,
-          };
-        } else {
-          return item;
-        }
-      });
-    });
-
+    dispatch(updateTimeslot(changeData));
     setShowModal(false);
   };
+
   return (
     <>
       <button
@@ -316,6 +323,7 @@ export function TimeslotsModal({ setData, setShowModal, showModal }) {
                     } else {
                       return (
                         <p
+                          key={e.id}
                           className={`${
                             changeData.id == e.id
                               ? "hover:border my-2 border "
@@ -360,36 +368,105 @@ export function TimeslotsModal({ setData, setShowModal, showModal }) {
     </>
   );
 }
-export function ClassroomModal({ data, setData, setShowModal, showModal }) {
-  const [modelData, setModalData] = useState([{ id: "", no: "", type: "" }]);
-  const [changeData, setChangeData] = useState({ id: "", no: "", type: "" });
-  useEffect(() => {
-    setModalData(dataofroom);
-  }, [modelData.length]);
 
+export function ClassroomModal({
+  timeslots,
+  setShowModal,
+  showModal,
+  Semester,
+  Division,
+}) {
+  const [modelData, setModalData] = useState([]);
+  const [changeData, setChangeData] = useState({
+    id: showModal.id,
+    no: "",
+    type: "",
+  });
+  const [availClassroom, setAvailClassroom] = useState([]);
+  const [classroomtimetable, setClassroomTimetable] = useState([]);
+
+  const dispatch = useDispatch();
   const handleSave = () => {
-    setData((prevState) => {
-      return prevState.map((item) => {
-        if (item.id == changeData.id) {
-          console.log(item.id);
-          return {
-            ...item,
-            no: changeData.no,
-            type: changeData.type,
-          };
-        } else {
-          return item;
+    dispatch(updateClassroom(changeData));
+    setShowModal({ is: false, id: "" });
+  };
+
+  useEffect(() => {
+    axios.get("http://localhost:3000/v1/getclassroomtimetable").then((res) => {
+      setClassroomTimetable(res.data.message);
+    });
+
+    axios
+      .get("http://localhost:3000/v1/manageresource/classroom")
+      .then((res) => {
+        setModalData(res.data.res.map(({ no, type }) => ({ no, type })));
+      });
+  }, []);
+
+  useEffect(() => {
+    const tempdata = new Set(modelData.map((e) => e));
+
+    const existempdata = new Set();
+    if (classroomtimetable.length > 0) {
+      classroomtimetable.map((f) => {
+        console.log(f.days[0]?.timeslots[showModal.id - 1]);
+        console.log(
+          Semester + " " + Division + " " + timeslots[showModal.id]?.timeslot
+        );
+        if (f.no != "" && f.type != "") {
+          const currentIndex = showModal.id - 1;
+          if (
+            (f.days[0]?.timeslots[currentIndex]?.Division == "" &&
+              f.days[0]?.timeslots[currentIndex]?.Semester == null &&
+              f.days[0]?.timeslots[currentIndex]?.Timeslot == "") ||
+            (f.days[0]?.timeslots[currentIndex]?.Division == Division &&
+              f.days[0]?.timeslots[currentIndex]?.Semester ==
+                parseInt(Semester) &&
+              f.days[0]?.timeslots[currentIndex]?.Timeslot ==
+                timeslots[currentIndex + 1]?.timeslot)
+          ) {
+            tempdata.forEach((item) => {
+              if (item.no == f.no) {
+                tempdata.delete(item);
+              }
+            });
+            tempdata.add({ no: f.no, type: f.type });
+          } else {
+            existempdata.add({ no: f.no, type: f.type });
+          }
+        }
+      });
+    }
+    console.log(tempdata);
+    console.log(existempdata);
+    existempdata.forEach((e) => {
+      tempdata.forEach((d) => {
+        if (parseInt(d.no) == parseInt(e.no)) {
+          tempdata.delete(d);
         }
       });
     });
-    setShowModal(false);
-  };
+
+    console.log(existempdata);
+    // set the result to the state
+    // const seen = new Set();
+    // for (const item of tempdata) {
+    //   if (seen.has(item.no)) {
+    //     tempdata.delete(item);
+    //   } else {
+    //     seen.add(item.no);
+    //   }
+    // }
+    setAvailClassroom([]);
+    setAvailClassroom(Array.from(tempdata));
+  }, [showModal, showModal?.is]);
+
   return (
     <>
       <button
         className=""
         type="button"
-        onClick={() => setShowModal(true)}
+        onClick={() => setShowModal({ is: true, id: "" })}
       ></button>
       {showModal.is ? (
         <>
@@ -399,12 +476,13 @@ export function ClassroomModal({ data, setData, setShowModal, showModal }) {
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                 {/*body*/}
                 <div className="relative p-6 flex-auto">
-                  {modelData.map((e) => {
+                  {availClassroom.map((e) => {
                     if (e.id == 0) {
                     } else {
                       return (
                         <div
-                          className={`${
+                          key={e.id}
+                          className={`flex flex-row justify-between mx-2 ${
                             changeData.id == e.id
                               ? "hover:border my-2 border "
                               : "hover:border my-2 "
@@ -417,8 +495,8 @@ export function ClassroomModal({ data, setData, setShowModal, showModal }) {
                             });
                           }}
                         >
-                          <p>{e.type}</p>
-                          <p>{e.no}</p>
+                          <p className="mx-1 text-2xl">{e.type}</p>
+                          <p className="mx-1 text-2xl">{e.no}</p>
                         </div>
                       );
                     }
@@ -429,7 +507,7 @@ export function ClassroomModal({ data, setData, setShowModal, showModal }) {
                   <button
                     className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                     type="button"
-                    onClick={() => setShowModal(false)}
+                    onClick={() => setShowModal({ is: false, id: "" })}
                   >
                     Close
                   </button>

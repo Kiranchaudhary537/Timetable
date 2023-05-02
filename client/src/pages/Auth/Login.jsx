@@ -1,15 +1,9 @@
-import React, { useState, useEffect, useContext } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
 import { useNavigate, NavLink } from "react-router-dom";
 import { Link } from "react-router-dom";
-import Cookies from "js-cookie";
-// import { AuthContext } from "./context/authContext";
-// import jwt from "jsonwebtoken";
-// import dotenv from 'dotenv'
-// dotenv.config()
+import AXIOS from "../../api/AXIOS";
 
-const Login = ({ setUserState }) => {
-  // const { login } = useContext(AuthContext);
+const Login = () => {
   const navigate = useNavigate();
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
@@ -49,44 +43,22 @@ const Login = ({ setUserState }) => {
     // }
   };
 
-  const API_URL = "http://localhost:3000";
   useEffect(() => {
     if (Object.keys(formErrors).length === 0 && isSubmit) {
-      axios
-        .post(`${API_URL}/login`, user, {
-          headers: {
-            "Content-Type": "application/json",
-            "x-access-token": localStorage.getItem("user"),
-          },
-        })
+      AXIOS.post("/login", user, {
+        withCredentials: true,
+      })
         .then((response) => {
           // Handle successful response
-
-          Cookies.remove();
-          console.log(response.data.token);
-          Cookies.set("token", response.data.token);
-          // const role = jwt.sign(
-          //   { role: response.data.role },
-          //   process.env.JWT_SECRET
-          // );
-          Cookies.set("role",response.data.role);
+          console.log(response.data);
+          localStorage.setItem("accessToken", response.data.token);
+          localStorage.setItem("userRole", response.data.role);
           navigate("/dashboard", { replace: true });
         })
         .catch((error) => {
           setVerifiedError(true);
           console.error(error);
         });
-      // axios
-      //   .post("http://localhost:3000/login", user)
-      //   .then((res) => {
-      //     console.log(res);
-      //     localStorage.setItem("user", JSON.stringify(res.data));
-      //     navigate("/dashboard", { replace: true });
-      //   })
-      //   .catch((e) => {
-      //     console.log(e);
-      //     setVerifiedError(true);
-      //   });
     }
   }, [formErrors, isSubmit]);
 
