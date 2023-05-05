@@ -10,7 +10,7 @@ const ManageResource = require("./api/routes/ManageResource.js");
 const ManageTimetable = require("./api/routes/ManageTimetable.js");
 const Confirm = require("./api/routes/auth/Confirm.js");
 const Register = require("./api/routes/auth/Register.js");
-const Login = require("./api/routes/auth/login.js");
+// const Login = require("./api/routes/auth/login.js");
 const Forgot = require("./api/routes/auth/ForgotPassword.js");
 const getClassTimetable = require("./api/routes/view/getClassTimetable.js");
 const getClassroomTimetable = require("./api/routes/view/getClassroomTimetable.js");
@@ -67,7 +67,7 @@ app.use("/v1/requestforfaculty", ProtectedRoute, getRequestFacultyRole);
 // app.use("/v1/profile")
 app.use("/confirm", Confirm);
 app.use("/signup", Register);
-app.use("/login", Login);
+// app.use("/login", Login);
 app.use("/forgot", Forgot);
 
 app.get("/v1/checkLogin", ProtectedRoute, (req, res) => {
