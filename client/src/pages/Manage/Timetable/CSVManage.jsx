@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Papa from "papaparse";
-import { useDispatch, useSelector, shallowEqual } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setCSVToTimetable } from "../../../features/timetable/timetableSlice";
 import { updateTimeslot } from "../../../features/timetable/timeslotSlice";
 
@@ -18,10 +18,10 @@ const getDayIndex = (day) => {
   });
 };
 
-function findTimeslotId(d, setTimeslots, timeslots) {
+function findTimeslotId(d, timeslots) {
   let f = -1,
     flag = true;
-  console.log(timeslots);
+
   for (let i = 0; i < timeslots.length; i++) {
     const timeslot = timeslots[i];
     if (timeslot.timeslot == d.TIMESLOT) {
@@ -32,29 +32,36 @@ function findTimeslotId(d, setTimeslots, timeslots) {
       flag = false;
     }
   }
-  // const updatedTimeslots = timeslots?.map((ts) => {
-  //   if (ts.id == f) {
-  //     return { id: ts.id, timeslot: d.TIMESLOT };
-  //   }
-  //   return ts;
-  // });
-
-  // assuming that you want to update the original `timeslot` array in the state
-  setTimeslots((prevTimeslots) =>
-    prevTimeslots.map((ts) => {
-      if (ts.id == f) {
-        return { id: ts.id, timeslot: d.TIMESLOT };
-      }
-      return ts;
-    })
-  );
 
   // If no timeslot is available, return -1 or throw an error.
   return f;
 }
 
+// const updateTimeslots = (id, timeslot, setTimeslots) => {
+//   // return new Promise((resolve) => {
+//   //   setTimeout(() => {
+//   setTimeslots((prevTimeslots) => {
+//     return prevTimeslots.map((item) => {
+//       if (item.id === id) {
+//         return {
+//           ...item,
+//           timeslot: timeslot,
+//         };
+//       }
+//       return item;
+//     });
+//   });
+//   // resolve();
+//   //   }, 1000); // Simulate asynchronous operation
+//   // });
+// };
+
 export default function CSVManage() {
   const dispatch = useDispatch();
+  const [data, setData] = useState();
+  const [id, setId] = useState();
+  const [timeslot, setTimeslot] = useState();
+
   const [timeslots, setTimeslots] = useState([
     {
       id: 0,
@@ -97,24 +104,16 @@ export default function CSVManage() {
     console.log(timeslots);
   }, [timeslots]);
   const changeHandler = (event) => {
-    // Passing file data (event.target.files[0]) to parse using Papa.parse
     Papa.parse(event.target.files[0], {
       header: true,
       skipEmptyLines: true,
       complete: function (results) {
-        results.data.map((d) => {
-
-          // i need to change this in such way that i am able to setTimeslot every time.
-          
-          const id = findTimeslotId(d, setTimeslots, timeslots);
-          if (id > 0) {
-            dispatch(updateTimeslot({ id: id, timeslot: d.TIMESLOT }));
-            dispatch(setCSVToTimetable({ data: d, id: id }));
-          }
-        });
+        setData(results);
       },
     });
   };
+
+
   return (
     <div>
       <input

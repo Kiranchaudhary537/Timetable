@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { ClassroomModal, TimeslotsModal } from "./Model";
 import CSVManage from "./CSVManage";
@@ -27,6 +26,7 @@ import {
   resetClassroom,
   setClassroom,
 } from "../../../features/timetable/classroomsSlice";
+import AXIOS from "../../../api/AXIOS";
 
 const getDayIndex = (day) => {
   const weekDays = [
@@ -82,7 +82,6 @@ async function updateFacultyState(dispatch, timetable) {
   return true;
 }
 
-
 export default function ManageTimetable() {
   const timetable = useSelector((state) => state.timetable);
   const timeslots = useSelector((state) => state.timeslot);
@@ -95,6 +94,8 @@ export default function ManageTimetable() {
   const [allFaculty, setAllFaculty] = useState([]);
   const [availFaculty, setAvailFaculty] = useState([]);
   const [subject, setSubject] = useState([]);
+  const [semester, setSemester] = useState([]);
+  const [division, setDivision] = useState([]);
 
   const dispatch = useDispatch();
 
@@ -150,17 +151,17 @@ export default function ManageTimetable() {
     const fetchData = async () => {
       if (isCheckcComplete && isCheckfComplete) {
         await Promise.all([
-          axios.post("http://localhost:3000/v1/managetimetable/class", {
+          AXIOS.post("/v1/managetimetable/class", {
             timetable,
             classrooms,
             timeslots,
             classFaculty,
           }),
-          axios.post("http://localhost:3000/v1/managetimetable/faculty", {
+          AXIOS.post("/v1/managetimetable/faculty", {
             faculty,
             timeslots,
           }),
-          axios.post("http://localhost:3000/v1/managetimetable/classroom", {
+          AXIOS.post("/v1/managetimetable/classroom", {
             classroomtimetable,
             timeslots,
           }),
@@ -194,20 +195,17 @@ export default function ManageTimetable() {
       currentValue?.division.trim() != "" &&
       currentValue?.semester.trim() != ""
     ) {
-      axios
-        .get(
-          `http://localhost:3000/v1/getclasstimetable/getclass/?semester=${currentValue.semester}&division=${currentValue.division}`
-        )
-        .then((res) => {
-          if (res.data.message !== null) {
-            dispatch(setTimetable({ timetable: res.data.message }));
-            dispatch(setTimeSlot({ timeslots: res.data.message.timeslots }));
-            dispatch(setClassroom({ classrooms: res.data.message.classrooms }));
-          }
-        });
+      AXIOS.get(
+        `/v1/getclasstimetable/getclass/?semester=${currentValue.semester}&division=${currentValue.division}`
+      ).then((res) => {
+        if (res.data.message !== null) {
+          dispatch(setTimetable({ timetable: res.data.message }));
+          dispatch(setTimeSlot({ timeslots: res.data.message.timeslots }));
+          dispatch(setClassroom({ classrooms: res.data.message.classrooms }));
+        }
+      });
 
-      axios
-        .get("http://localhost:3000/v1/getfacultytimetable")
+      AXIOS.get("/v1/getfacultytimetable")
         .then((res) => {
           dispatch(setFacultyTimetable({ timetable: res.data.message }));
           dispatch(
@@ -220,7 +218,7 @@ export default function ManageTimetable() {
         .finally(() => {});
     }
 
-    axios.get("http://localhost:3000/v1/manageresource/subject").then((res) => {
+    AXIOS.get("/v1/manageresource/subject").then((res) => {
       const namesArray = res.data.res?.filter(
         (f) => f.min < f.max && parseInt(currentValue.semester) == f.semester
       );
@@ -234,10 +232,22 @@ export default function ManageTimetable() {
   };
 
   useEffect(() => {
-    axios.get("http://localhost:3000/v1/manageresource/faculty").then((res) => {
+    AXIOS.get("/v1/manageresource/faculty").then((res) => {
       const namesArray = res.data.res?.map((f) => f.short_form);
       setAllFaculty(namesArray);
       setAvailFaculty(allFaculty);
+    });
+    AXIOS.get("/v1/manageresource/class").then((e) => {
+      // setClasses(e.data.res);
+      const semesterSet = new Set();
+      const divisionSet = new Set();
+
+      e.data.res.forEach((item) => {
+        semesterSet.add(item.semester);
+        divisionSet.add(item.division);
+      });
+      setSemester([...semesterSet]);
+      setDivision([...divisionSet]);
     });
   }, []);
 
@@ -253,10 +263,8 @@ export default function ManageTimetable() {
           f.days[currentDayIndex]?.timeslots[currentIndex]?.Division == "" &&
           f.days[currentDayIndex]?.timeslots[currentIndex]?.Semester == ""
         ) {
-          console.log(f.name + "add");
           tempdata.add(f.name);
         } else {
-          console.log(f.name + "delete");
           existempdata.add(f.name);
         }
       });
@@ -288,9 +296,9 @@ export default function ManageTimetable() {
             }}
           >
             <option>Select Semester</option>
-            <option>6</option>
-            <option>4</option>
-            <option>2</option>
+            {semester?.map((e) => {
+              return <option>{e}</option>;
+            })}
           </select>
           <select
             id="divison"
@@ -305,9 +313,9 @@ export default function ManageTimetable() {
             }}
           >
             <option>Select Division</option>
-            <option>H</option>
-            <option>I</option>
-            <option>J</option>
+            {division?.map((e) => {
+              return <option>{e}</option>;
+            })}
           </select>
           <button
             onClick={() => {
@@ -406,12 +414,12 @@ export default function ManageTimetable() {
               })}
             </tbody>
           </table>
-          <div className="flex flex-row justify-between p-2">
-            {currentValue.semester == "" || currentValue.division == "" ? (
+          <div className="flex flex-row justify-end p-2">
+            {/* {currentValue.semester == "" || currentValue.division == "" ? (
               <p>please select semester and division first</p>
             ) : (
-              <CSVManage timeslots={timeslots} />
-            )}
+              <CSVManage />
+            )} */}
 
             <div>
               <button

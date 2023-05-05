@@ -1,4 +1,4 @@
-import axios from "axios";
+import AXIOS from "./../../../api/AXIOS";
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import TimeKeeper from "react-timekeeper";
 import { Table, Column, HeaderCell, Cell } from "rsuite-table";
@@ -61,12 +61,11 @@ const TimeSlotModal = ({ title, showModal, setShowModal, setData }) => {
       setEndTime("");
       setShowModal(false);
     } else {
-      axios
-        .post("http://localhost:3000/v1/manageresource/timeslot", {
-          day,
-          startTime,
-          endTime,
-        })
+      AXIOS.post("/v1/manageresource/timeslot", {
+        day,
+        startTime,
+        endTime,
+      })
         .then((e) => {
           console.log("success");
           setDay("");
@@ -119,12 +118,10 @@ const TimeSlotModal = ({ title, showModal, setShowModal, setData }) => {
               <select
                 id="days"
                 onChange={(e) => {
-            
                   setDay(e.target.value);
                 }}
                 class="border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               >
-                
                 <option value="Day">Day</option>
                 <option value="Monday">Monday</option>
                 <option value="Tuesday">Tuesday</option>
@@ -221,12 +218,10 @@ export default function Timeslots() {
 
   const handleShowModal = () => setShowModal(true);
   useEffect(() => {
-    axios
-      .get("http://localhost:3000/v1/manageresource/timeslot")
-      .then((res) => {
-        setData(res.data.res);
-        console.log(res.data.res);
-      });
+    AXIOS.get("/v1/manageresource/timeslot").then((res) => {
+      setData(res.data.res);
+      console.log(res.data.res);
+    });
   }, [data.length]);
   useEffect(() => {
     if (searchInput.trim() == "") {
@@ -254,8 +249,7 @@ export default function Timeslots() {
     [checkedKeys]
   );
   const handleDelete = async () => {
-    await axios
-      .patch("http://localhost:3000/v1/manageresource/timeslot", checkedKeys)
+    await AXIOS.patch("/v1/manageresource/timeslot", checkedKeys)
       .then((e) => {
         setData(data.filter((elem) => !checkedKeys.includes(elem._id)));
         setCheckedKeys([]);

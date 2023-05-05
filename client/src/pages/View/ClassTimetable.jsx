@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { useParams } from "react-router-dom";
 import { Table, Column, HeaderCell, Cell } from "rsuite-table";
 import "rsuite-table/dist/css/rsuite-table.css";
+import AXIOS from "../../api/AXIOS";
 
 const Data = [
   {
@@ -75,18 +75,16 @@ const Data2 = [
   },
 ];
 
-
 export default function ClassTimetable() {
   const [data, setData] = useState([]);
   const [data1, setData1] = useState([]);
   const { ClassId } = useParams();
   useEffect(() => {
-    axios
+    AXIOS
       .get("http://localhost:3000/v1/getclasstimetable/" + ClassId)
       .then((res) => {
         setData(res.data.message);
         setData1(res.data.message.timeslots);
-        console.log(res.data.message.timeslots);
       });
   }, []);
 
@@ -94,6 +92,14 @@ export default function ClassTimetable() {
     <>
       <div className="flex justify-center h-screen w-full">
         <div className="w-full mt-16">
+          <div className="flex flex-row justify-center">
+            <h1 className="text-3xl text-gray-500 mx-1">
+              Semester: {data.semester}
+            </h1>
+            <h1 className="text-3xl text-gray-500 mx-1">
+              Division: {data.division}
+            </h1>
+          </div>
           <table id="timetable" className="border m-2 ">
             <thead>
               <tr>

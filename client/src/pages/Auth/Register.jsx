@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import AXIOS from "../../api/AXIOS";
 const Register = () => {
@@ -62,31 +61,14 @@ const Register = () => {
     //   setIsSubmit(true);
     // }
   };
-  const API_URL = "http://localhost:3000";
   useEffect(() => {
     if (Object.keys(formErrors).length === 0 && isSubmit) {
       console.log(user);
-      // axios
-      //   .post(`${API_URL}/example`, user, {
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //   })
-      //   .then((response) => {
-
-      //     navigate("/login", { replace: true });
-      //   })
-      //   .catch((error) => {
-      //     setVerifiedError(true);
-      //     console.error(error);
-      //   });
+  
       AXIOS.post("/signup", user).then((res) => {
         navigate("/login", { replace: true });
       });
-      // axios.post("http://localhost:3000/signup", user).then((res) => {
-      //   alert(res.data.message);
-      //   navigate("/login", { replace: true });
-      // });
+ 
     }
   }, [formErrors]);
   return (

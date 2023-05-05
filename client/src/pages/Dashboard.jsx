@@ -1,9 +1,9 @@
 import React, { useContext,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/authContext";
+
 
 export default function Dashboard() {
-  const { isLoggedIn } = useContext(AuthContext);
+
   const navigate = useNavigate();
   // if (isLoggedIn == false) {
   //   console.log(false);

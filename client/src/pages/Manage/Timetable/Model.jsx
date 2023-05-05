@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { updateTimeslot } from "../../../features/timetable/timeslotSlice";
 import { updateClassroom } from "../../../features/timetable/classroomsSlice";
@@ -26,12 +25,11 @@ export const TimeSlotModal = ({ title, showModal, setShowModal, setData }) => {
       setEndtime("");
       setShowModal(false);
     } else {
-      axios
-        .post("http://localhost:3000/v1/manageresource/timeslot", {
-          day,
-          starttime,
-          endtime,
-        })
+      AXIOS.post("/v1/manageresource/timeslot", {
+        day,
+        starttime,
+        endtime,
+      })
         .then((e) => {
           console.log("success");
           setDay("");
@@ -154,12 +152,11 @@ export const SubjectModal = ({ title, showModal, setShowModal, setData }) => {
       setEndtime("");
       setShowModal(false);
     } else {
-      axios
-        .post("http://localhost:3000/v1/manageresource/timeslot", {
-          day,
-          starttime,
-          endtime,
-        })
+      AXIOS.post("/v1/manageresource/timeslot", {
+        day,
+        starttime,
+        endtime,
+      })
         .then((e) => {
           console.log("success");
           setDay("");
@@ -275,7 +272,7 @@ export function TimeslotsModal({ setShowModal, showModal }) {
   const [changeData, setChangeData] = useState({ id: "", timeslot: "" });
 
   // useEffect( () => {
-  //   await axios
+  //   await AXIOS
   //     .get("http://localhost:3000/v1/manageresource/timeslot")
   //     .then((e) => {
   //       // setModalData(e.res);
@@ -285,8 +282,7 @@ export function TimeslotsModal({ setShowModal, showModal }) {
 
   useEffect(() => {
     async function fetchData() {
-      axios
-        .get("http://localhost:3000/v1/manageresource/timeslot")
+      AXIOS.get("/v1/manageresource/timeslot")
         .then((response) => {
           setModalData(response.data.res);
         })
@@ -392,15 +388,13 @@ export function ClassroomModal({
   };
 
   useEffect(() => {
-    axios.get("http://localhost:3000/v1/getclassroomtimetable").then((res) => {
+    AXIOS.get("/v1/getclassroomtimetable").then((res) => {
       setClassroomTimetable(res.data.message);
     });
 
-    axios
-      .get("http://localhost:3000/v1/manageresource/classroom")
-      .then((res) => {
-        setModalData(res.data.res.map(({ no, type }) => ({ no, type })));
-      });
+    AXIOS.get("/v1/manageresource/classroom").then((res) => {
+      setModalData(res.data.res.map(({ no, type }) => ({ no, type })));
+    });
   }, []);
 
   useEffect(() => {

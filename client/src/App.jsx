@@ -26,6 +26,8 @@ import Index from "./Index";
 import { Provider } from "react-redux";
 import store from "./features/timetable/timetablestore";
 import PrivateRoute from "./PrivateRoutes";
+import { headerContextProvider } from "./context/headerContext";
+import NoPageFound from "./pages/NoPageFound";
 
 // import 'tw-elements/dist/index.css';
 
@@ -138,16 +140,16 @@ export default function App() {
   // const userRole = "coordinator";
   const studentRoutes = userRole == "STUDENT" && (
     <>
-      <Route index element={<Dashboard />} />
-      <Route path="/dashboard" element={<Dashboard />} />
+      <Route index element={<Classess />} />
+      {/* <Route path="/dashboard" element={<Dashboard />} /> */}
       <Route path="/classtimetable" element={<Classess />} />
       <Route path="/classtimetable/:ClassId" element={<ClassTimetable />} />
     </>
   );
   const facultyRoutes = userRole == "FACULTY" && (
     <>
-      <Route index element={<Dashboard />} />
-      <Route path="/dashboard" element={<Dashboard />} />
+      <Route index element={<Classess />} />
+      {/* <Route path="/dashboard" element={<Dashboard />} /> */}
       <Route path="/classtimetable" element={<Classess />} />
       <Route path="/classtimetable/:ClassId" element={<ClassTimetable />} />
       <Route path="/facultytimetable" element={<Faculties />} />
@@ -165,8 +167,8 @@ export default function App() {
   );
   const adminRoutes = userRole == "ADMIN" && (
     <>
-      <Route index element={<Dashboard />} />
-      <Route path="/dashboard" element={<Dashboard />} />
+      <Route index element={<Classess />} />
+      {/* <Route path="/dashboard" element={<Dashboard />} /> */}
       <Route path="/classtimetable" element={<Classess />} />
       <Route path="/classtimetable/:ClassId" element={<ClassTimetable />} />
       <Route path="/facultytimetable" element={<Faculties />} />
@@ -189,8 +191,10 @@ export default function App() {
 
   const coordinatorRoutes = userRole == "COORDINATOR" && (
     <>
-      <Route index element={<Dashboard />} />
-      <Route path="/dashboard" element={<Dashboard />} />
+      <Route index element={<Classess />} />
+      {/* <Route path="/dashboard" element={<Dashboard />} /> */}
+      <Route path="/classtimetable" element={<Classess />} />
+      <Route path="/classtimetable/:ClassId" element={<ClassTimetable />} />
       <Route path="/manageresource" element={<ManageResource />}>
         <Route path="/manageresource" element={<Navigate to="class" />} />
         <Route path="/manageresource/class" element={<Class />} />
@@ -200,8 +204,7 @@ export default function App() {
         <Route path="/manageresource/subject" element={<Subject />} />
       </Route>
       <Route path="/managetimetable" element={<ManageTimetable />} />
-      <Route path="/classtimetable" element={<Classess />} />
-      <Route path="/classtimetable/:ClassId" element={<ClassTimetable />} />
+      {/* <Route path="/classtimetable" element={<Classess />} /> */}
       <Route path="/facultytimetable" element={<Faculties />} />
       <Route
         path="/facultytimetable/:FacultyId"
@@ -233,6 +236,7 @@ export default function App() {
               {adminRoutes}
               {coordinatorRoutes}
             </Route>
+              <Route path="*" element={<NoPageFound />} />
           </Route>
         </Routes>
       </Router>

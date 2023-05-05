@@ -1,4 +1,4 @@
-import axios from "axios";
+import AXIOS from './../../../api/AXIOS';
 import React, { useState, useEffect, useCallback } from "react";
 import { Table, Column, HeaderCell, Cell } from "rsuite-table";
 import { MdDeleteForever, MdOutlineSearch } from "react-icons/md";
@@ -20,7 +20,7 @@ const ClassroomModel = ({ title, showModal, setShowModal, setData }) => {
       setNo("");
       setShowModal(false);
     } else {
-      axios
+      AXIOS
         .post("http://localhost:3000/v1/manageresource/classroom", {
           no,
           type,
@@ -161,8 +161,8 @@ export default function Classroom() {
 
   const handleShowModal = () => setShowModal(true);
   useEffect(() => {
-    axios
-      .get("http://localhost:3000/v1/manageresource/classroom")
+    AXIOS
+      .get("/v1/manageresource/classroom")
       .then((res) => {
         setData(res.data.res);
       });
@@ -186,8 +186,8 @@ export default function Classroom() {
     [checkedKeys]
   );
   const handleDelete = async () => {
-    await axios
-      .patch("http://localhost:3000/v1/manageresource/classroom", checkedKeys)
+    await AXIOS
+      .patch("/v1/manageresource/classroom", checkedKeys)
       .then((e) => {
         setData(data.filter((elem) => !checkedKeys.includes(elem._id)));
         setCheckedKeys([]);

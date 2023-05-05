@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+
 import { useParams, useLocation } from "react-router-dom";
 import { Table, Column, HeaderCell, Cell } from "rsuite-table";
 import "rsuite-table/dist/css/rsuite-table.css";
+
 
 const Data = [
   {
@@ -81,10 +82,12 @@ export default function ClassroomTimetable({ state }) {
   const propsData = location.state;
   const [data, setData] = useState([]);
   const [data1, setData1] = useState([]);
+  const [name, setName] = useState({ classroom: "", Type: "" });
   // const { FacultyId } = useParams();
   console.log(propsData);
   useEffect(() => {
     setData(propsData.days);
+    setName({ classroom: propsData.no, Type: propsData.type });
     setData1(propsData.timeslots);
   }, []);
   return (
@@ -92,6 +95,12 @@ export default function ClassroomTimetable({ state }) {
       {data.length > 0 ? (
         <div className="flex justify-center h-screen w-full">
           <div className="w-full mt-16">
+            <div className="flex flex-row justify-center">
+              <h1 className="text-3xl text-gray-500 mx-1">
+                Classroom: {name.classroom}
+              </h1>
+              <h1 className="text-3xl text-gray-500 mx-1">Type: {name.Type}</h1>
+            </div>
             <table id="timetable" className="border m-2 ">
               <thead>
                 <tr>
@@ -125,7 +134,6 @@ export default function ClassroomTimetable({ state }) {
                             <br />
                             {ele.Faculty}
                             <br />
-                            
                           </td>
                         );
                       })}

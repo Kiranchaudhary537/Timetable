@@ -23,6 +23,8 @@ const {
   checkPermission,
 } = require("./api/middleware/ProtectedRoute");
 const getClassFaculty = require("./api/routes/view/getClassFaculty");
+const RequestFacultyRole = require("./api/models/RequestFaculty");
+const getRequestFacultyRole = require("./api/routes/utils/RequestForFaculty");
 
 const app = express();
 const port = 3000;
@@ -61,7 +63,7 @@ app.use("/v1/getcurrentlabstatus", getCurrentLabStatus);
 app.use("/v1/getcurrentfucultystatus", getCurrentFacultyStatus);
 // app.use("/v1/getclassfaculty", getClassFaculty);
 // app.use("/v1/messages");
-// app.use("/v1/requestforfaculty")
+app.use("/v1/requestforfaculty", getRequestFacultyRole);
 // app.use("/v1/profile")
 app.use("/confirm", Confirm);
 app.use("/signup", Register);

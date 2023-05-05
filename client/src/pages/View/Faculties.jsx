@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { Link } from "react-router-dom";
+import AXIOS from "../../api/AXIOS";
 
 export default function Faculties() {
   const width = Math.floor(window.innerWidth / 20);
@@ -21,8 +21,9 @@ export default function Faculties() {
   };
 
   const dayName = getDayName(new Date().getDay());
+  
   useEffect(() => {
-    axios.get("http://localhost:3000/v1/getfacultytimetable").then((res) => {
+    AXIOS.get("/v1/getfacultytimetable").then((res) => {
       setData(res.data.message);
     });
     // console.log(data);

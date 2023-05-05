@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+
 import cx from "classnames";
 import { Link } from "react-router-dom";
+import AXIOS from "../../api/AXIOS";
 const Data = [
   {
     id: 1,
@@ -40,7 +41,7 @@ export default function Classrooms() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:3000/v1/getclassroomtimetable").then((res) => {
+    AXIOS.get("/v1/getclassroomtimetable").then((res) => {
       setData(res.data.message);
       console.log(res.data.message);
     });

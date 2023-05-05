@@ -1,7 +1,8 @@
 import cx from "classnames";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import AXIOS from "../../api/AXIOS";
+
 const Data = [
   {
     id: 1,
@@ -30,7 +31,7 @@ export default function Classess() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:3000/v1/getclasstimetable").then((res) => {
+    AXIOS.get("/v1/getclasstimetable").then((res) => {
       setData(res.data.message);
     });
     console.log(data);
@@ -39,7 +40,7 @@ export default function Classess() {
   return (
     <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 auto-cols-fr	">
       {data.map((e) => {
-        return (
+        return e.semester != "" && e.division != "" ? (
           <Link to={`${e._id}`}>
             <div className="flex justify-center">
               <div
@@ -92,6 +93,8 @@ export default function Classess() {
               </div>
             </div>
           </Link>
+        ) : (
+          <></>
         );
       })}
     </div>

@@ -12,15 +12,15 @@ import { FiPieChart } from "react-icons/fi";
 import { GrMail } from "react-icons/gr";
 import { FiSettings } from "react-icons/fi";
 
-export default function SideBar() {
+export default function SideBar({ setHeaderTitle }) {
   const userRole = localStorage.getItem("userRole")
     ? localStorage.getItem("userRole")
     : "";
-  
+
   const logOut = () => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("userRole");
-  }
+  };
   return (
     <>
       <button
@@ -61,7 +61,7 @@ export default function SideBar() {
             <h1 className="font-semibold text-justify mx-1 text-xl text-slate-900 ">
               Kiran Chaudhary
             </h1>
-            <Link
+            {/* <Link
               to="#"
               className="flex items-center p-2 text-base font-normal  rounded-lg  hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 "
             >
@@ -75,7 +75,7 @@ export default function SideBar() {
                 <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
                 <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
               </svg>
-            </Link>
+            </Link> */}
           </div>
 
           {userRole == "ADMIN" ||
@@ -84,7 +84,7 @@ export default function SideBar() {
           userRole == "STUDENT" ? (
             <ul className="space-y-3 mt-8">
               <span className="">View Timetable</span>
-              <li>
+              {/* <li>
                 <NavLink
                   to="/dashboard"
                   className={({ isActive }) =>
@@ -92,11 +92,12 @@ export default function SideBar() {
                       ? "flex items-center p-2 text-base font-normal  rounded-lg  bg-gray-700 text-white font-bold"
                       : "flex items-center p-2 text-base font-normal  rounded-lg  hover:text-white hover:bg-gray-100 hover:bg-gray-700"
                   }
+                  
                 >
                   <MdDashboard size={24} />
                   <span className="ml-3">Dashboard</span>
                 </NavLink>
-              </li>
+              </li> */}
 
               <li>
                 <NavLink
@@ -106,6 +107,7 @@ export default function SideBar() {
                       ? "flex items-center p-2 text-base font-normal  rounded-lg  bg-gray-700 text-white font-bold"
                       : "flex items-center p-2 text-base font-normal  rounded-lg  hover:text-white hover:bg-gray-100 hover:bg-gray-700"
                   }
+                  onClick={() => setHeaderTitle("Class Timetable")}
                 >
                   <SiGoogleclassroom size={24} />
                   <span className="flex-1 ml-3 whitespace-nowrap">
@@ -130,6 +132,7 @@ export default function SideBar() {
                       ? "flex items-center p-2 text-base font-normal  rounded-lg  bg-gray-700 text-white font-bold"
                       : "flex items-center p-2 text-base font-normal  rounded-lg  hover:text-white hover:bg-gray-100 hover:bg-gray-700"
                   }
+                  onClick={() => setHeaderTitle("Faculty Timetable")}
                 >
                   <BsPerson size={24} />
                   <span className="flex-1 flex-wrap ml-3 whitespace-nowrap">
@@ -236,7 +239,9 @@ export default function SideBar() {
           <ul>
             <li>
               <NavLink
-               onClick={()=>{logOut()}}
+                onClick={() => {
+                  logOut();
+                }}
                 to="/login"
                 className="flex items-center p-2 text-red-500 text-base font-normal  rounded-lg  hover:text-red-500 hover:bg-red-100 dark:hover:bg-gray-700"
               >

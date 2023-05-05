@@ -53,7 +53,7 @@ const Login = () => {
           console.log(response.data);
           localStorage.setItem("accessToken", response.data.token);
           localStorage.setItem("userRole", response.data.role);
-          navigate("/dashboard", { replace: true });
+          navigate("/classtimetable", { replace: true });
         })
         .catch((error) => {
           setVerifiedError(true);

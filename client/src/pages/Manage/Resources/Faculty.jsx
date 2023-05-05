@@ -1,4 +1,4 @@
-import axios from "axios";
+import AXIOS from "./../../../api/AXIOS";
 import React, { useState, useEffect, useCallback } from "react";
 import { Table, Column, HeaderCell, Cell } from "rsuite-table";
 
@@ -48,12 +48,11 @@ const FacultyModal = ({ title, showModal, setShowModal, setData }) => {
       setSubjects([]);
       setShowModal(false);
     } else {
-      axios
-        .post("http://localhost:3000/v1/manageresource/faculty", {
-          name,
-          short_form,
-          subject,
-        })
+      AXIOS.post("/v1/manageresource/faculty", {
+        name,
+        short_form,
+        subject,
+      })
         .then((e) => {
           console.log("success");
           setName("");
@@ -197,7 +196,7 @@ const CheckCell = ({ rowData, onChange, checkedKeys, dataKey, ...props }) => {
 };
 
 const CustomSubjectCell = ({ rowData, dataKey, ...props }) => {
-  const subjects = rowData.subjects.join(', ');
+  const subjects = rowData.subjects.join(", ");
   return <Cell {...props}>{subjects}</Cell>;
 };
 export default function Faculty() {
@@ -210,7 +209,7 @@ export default function Faculty() {
   const handleShowModal = () => setShowModal(true);
 
   useEffect(() => {
-    axios.get("http://localhost:3000/v1/manageresource/faculty").then((res) => {
+    AXIOS.get("/v1/manageresource/faculty").then((res) => {
       setData(res.data.res);
     });
   }, [data.length]);
@@ -233,8 +232,7 @@ export default function Faculty() {
     [checkedKeys]
   );
   const handleDelete = async () => {
-    await axios
-      .patch("http://localhost:3000/v1/manageresource/faculty", checkedKeys)
+    await AXIOS.patch("/v1/manageresource/faculty", checkedKeys)
       .then((e) => {
         setData(data.filter((elem) => !checkedKeys.includes(elem._id)));
         setCheckedKeys([]);

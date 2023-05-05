@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Route, Routes, Navigate, Outlet } from "react-router-dom";
-// import AXIOS from "./utils/AXIOS";
-import axios from "axios";
+import AXIOS from "./api/AXIOS";
+
 
 // API endpoint for checking login status
-const CHECK_LOGIN_API = "http://localhost:3000/v1/checkLogin";
+const CHECK_LOGIN_API = "/v1/checkLogin";
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
   const [authenticated, setAuthenticated] = useState(null); // set initial state to null
@@ -12,14 +12,14 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
   useEffect(() => {
     const checkLogin = async () => {
       try {
-        const response = await axios.get(CHECK_LOGIN_API, {
+        const response = await AXIOS.get(CHECK_LOGIN_API, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
             "Content-Type": "application/json",
           },
           withCredentials: true,
         });
-        // localStorage.setItem("userRole", response.data.role);
+        localStorage.setItem("userRole", response.data.role);
         setAuthenticated(true);
       } catch (error) {
         console.error(error);

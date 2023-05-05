@@ -440,7 +440,7 @@ const updateTimetableForCSV = (d, id, timetable) => {
     Type: d.TYPE,
     // Add more fields here if needed
   };
-  console.log(timetable);
+  
   return timetable;
 };
 
@@ -462,7 +462,7 @@ export const timetableSlice = createSlice({
         faculty,
         valueForUpdate,
       } = action.payload;
-      console.log(semester, division);
+     
       if (valueForUpdate == "Faculty") {
         const updatedDay = state.days[dayIndex];
 
@@ -544,7 +544,7 @@ export const timetableSlice = createSlice({
       let newTimetable = state;
       newTimetable = updateTimetableForCSV(data, id, newTimetable);
       state = newTimetable;
-      console.log(state);
+  
       return state;
     },
 
