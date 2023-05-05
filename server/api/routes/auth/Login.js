@@ -4,7 +4,8 @@ const bcrypt = require("bcrypt");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 
-const login = async (req, res) => {
+const Login = express.Router();
+Login.post("/", async (req, res) => {
   const { password } = req.body;
   const user = await User.findOne({ email: req.body.email });
   if (user) {
@@ -44,8 +45,6 @@ const login = async (req, res) => {
       res.status(404).send({ message: "User Not found." });
     }
   }
-};
+});
 
-const Login = express.Router();
-Login.route("/").post(login);
 module.exports = Login;
