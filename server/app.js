@@ -41,7 +41,7 @@ app.use(morgan("dev"));
 app.use(helmet());
 app.use(
   session({
-    secret: "http://localhost:5173",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
   })
@@ -49,21 +49,21 @@ app.use(
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: process.env.CLIENT_URL,
     credentials: true,
   })
 );
 
-app.use("/v1/manageresource", ManageResource);
-app.use("/v1/managetimetable", ManageTimetable);
-app.use("/v1/getclasstimetable", getClassTimetable);
-app.use("/v1/getfacultytimetable", getFacultyTimetable);
-app.use("/v1/getclassroomtimetable", getClassroomTimetable);
-app.use("/v1/getcurrentlabstatus", getCurrentLabStatus);
-app.use("/v1/getcurrentfucultystatus", getCurrentFacultyStatus);
+app.use("/v1/manageresource", ProtectedRoute, ManageResource);
+app.use("/v1/managetimetable", ProtectedRoute, ManageTimetable);
+app.use("/v1/getclasstimetable", ProtectedRoute, getClassTimetable);
+app.use("/v1/getfacultytimetable", ProtectedRoute, getFacultyTimetable);
+app.use("/v1/getclassroomtimetable", ProtectedRoute, getClassroomTimetable);
+app.use("/v1/getcurrentlabstatus", ProtectedRoute, getCurrentLabStatus);
+app.use("/v1/getcurrentfucultystatus", ProtectedRoute, getCurrentFacultyStatus);
+app.use("/v1/requestforfaculty", ProtectedRoute, getRequestFacultyRole);
 // app.use("/v1/getclassfaculty", getClassFaculty);
 // app.use("/v1/messages");
-app.use("/v1/requestforfaculty", getRequestFacultyRole);
 // app.use("/v1/profile")
 app.use("/confirm", Confirm);
 app.use("/signup", Register);
