@@ -5,18 +5,18 @@ const morgan = require("morgan");
 const helmet = require("helmet");
 const session = require("express-session");
 const cors = require("cors");
-const db = require("./api/config/Database");
-const ManageResource = require("./api/routes/ManageResource");
-const ManageTimetable = require("./api/routes/ManageTimetable");
-const Confirm = require("./api/routes/auth/Confirm");
-const Register = require("./api/routes/auth/Register");
-const Login = require("./api/routes/auth/login");
-const Forgot = require("./api/routes/auth/ForgotPassword");
-const getClassTimetable = require("./api/routes/view/getClassTimetable");
-const getClassroomTimetable = require("./api/routes/view/getClassroomTimetable");
-const getFacultyTimetable = require("./api/routes/view/getFacultyTimetable");
-const getCurrentLabStatus = require("./api/routes/view/CurrentLab");
-const getCurrentFacultyStatus = require("./api/routes/view/CurrentFaculty");
+const db = require("./api/config/Database.js");
+const ManageResource = require("./api/routes/ManageResource.js");
+const ManageTimetable = require("./api/routes/ManageTimetable.js");
+const Confirm = require("./api/routes/auth/Confirm.js");
+const Register = require("./api/routes/auth/Register.js");
+const Login = require("./api/routes/auth/login.js");
+const Forgot = require("./api/routes/auth/ForgotPassword.js");
+const getClassTimetable = require("./api/routes/view/getClassTimetable.js");
+const getClassroomTimetable = require("./api/routes/view/getClassroomTimetable.js");
+const getFacultyTimetable = require("./api/routes/view/getFacultyTimetable.js");
+const getCurrentLabStatus = require("./api/routes/view/CurrentLab.js");
+const getCurrentFacultyStatus = require("./api/routes/view/CurrentFaculty.js");
 
 const {
   ProtectedRoute,
