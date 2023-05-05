@@ -99,21 +99,21 @@ const FacultyModal = ({ title, showModal, setShowModal, setData }) => {
             </h3>
           </div>
           <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-            <div class="flex flex-col space-y-4">
-              <label for="name" class="text-lg font-medium">
+            <div className="flex flex-col space-y-4">
+              <label for="name" className="text-lg font-medium">
                 Name
               </label>
               <input
                 id="Name"
                 name="Name"
                 type="text"
-                class="border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 onChange={(e) =>
                   setName(e.target.value.trim().trimStart().toUpperCase())
                 }
                 placeholder="Start with time then A.M or P.M Ex. 10:00 A.M"
               />
-              <label for="short_fomr" class="text-lg font-medium">
+              <label for="short_fomr" className="text-lg font-medium">
                 Short Form
               </label>
 
@@ -121,21 +121,21 @@ const FacultyModal = ({ title, showModal, setShowModal, setData }) => {
                 id="short_fomr"
                 name="short_fomr"
                 type="text"
-                class="border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 onChange={(e) =>
                   setShortForm(e.target.value.trim().trimStart().toUpperCase())
                 }
                 placeholder="Start with time then A.M or P.M Ex. 10:00 A.M"
               />
 
-              <label for="subjects" class="text-lg font-medium">
+              <label for="subjects" className="text-lg font-medium">
                 Subjects
               </label>
               <input
                 id="subjects"
                 name="subjects"
                 type="text"
-                class="border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 onChange={(e) => {
                   setSubject(e.target.value.trim().trimStart().toUpperCase());
                 }}
@@ -267,11 +267,11 @@ export default function Faculty() {
               >
                 <MdDeleteForever className="" size={28} color={"red"} />
               </div>
-              <div class=" m-1 flex justify-center">
-                <div class=" p-2 xl:w-96 flex flex-row">
+              <div className=" m-1 flex justify-center">
+                <div className=" p-2 xl:w-96 flex flex-row">
                   <input
                     type="search"
-                    class="relative m-0 block w-full min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-1.5 text-base font-normal text-neutral-700 outline-none transition duration-300 ease-in-out focus:border-primary-600 focus:text-neutral-700 focus:shadow-te-primary focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200"
+                    className="relative m-0 block w-full min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-1.5 text-base font-normal text-neutral-700 outline-none transition duration-300 ease-in-out focus:border-primary-600 focus:text-neutral-700 focus:shadow-te-primary focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200"
                     id="exampleSearch"
                     placeholder="search"
                     onChange={(e) => setsearchInput(e.target.value)}
@@ -291,7 +291,7 @@ export default function Faculty() {
                 <button
                   type="button"
                   onClick={handleShowModal}
-                  class=" p-2 mx-auto my-2 text-white bg-blue-600 rounded hover:bg-blue-700 md:mx-0 font-semibold"
+                  className=" p-2 mx-auto my-2 text-white bg-blue-600 rounded hover:bg-blue-700 md:mx-0 font-semibold"
                 >
                   Add New Subject
                 </button>

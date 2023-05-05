@@ -74,15 +74,15 @@ const Register = () => {
   return (
     <>
       <section className="bg-gradient-to-r from-cyan-500 to-blue-500">
-        <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-          <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 ">
-            <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-              <h1 class="text-xl font-bold text-gray-900 leading-tight tracking-tight  md:text-2xl ">
+        <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+          <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 ">
+            <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
+              <h1 className="text-xl font-bold text-gray-900 leading-tight tracking-tight  md:text-2xl ">
                 Singup to your account
               </h1>
-              <form class="space-y-4 md:space-y-6" action="#">
+              <form className="space-y-4 md:space-y-6" action="#">
                 <div>
-                  <label for="fname" class="block mb-2 text-sm font-medium  ">
+                  <label for="fname" className="block mb-2 text-sm font-medium  ">
                     First Name
                   </label>
                   <input
@@ -92,13 +92,13 @@ const Register = () => {
                     placeholder="First Name"
                     onChange={changeHandler}
                     value={user.fname}
-                    class="bg-gray-50 border border-gray-300  sm:text-sm rounded-lg focus:ring-primary-600 focus:border-blue-600 block w-full p-2.5"
+                    className="bg-gray-50 border border-gray-300  sm:text-sm rounded-lg focus:ring-primary-600 focus:border-blue-600 block w-full p-2.5"
                     required
                   />
                   <p className="text-red-600">{formErrors.fname}</p>
                 </div>
                 <div>
-                  <label for="lname" class="block mb-2 text-sm font-medium  ">
+                  <label for="lname" className="block mb-2 text-sm font-medium  ">
                     Last Name
                   </label>
                   <input
@@ -108,13 +108,13 @@ const Register = () => {
                     placeholder="Last Name"
                     onChange={changeHandler}
                     value={user.lname}
-                    class="bg-gray-50 border border-gray-300  sm:text-sm rounded-lg focus:ring-primary-600 focus:border-blue-600 block w-full p-2.5"
+                    className="bg-gray-50 border border-gray-300  sm:text-sm rounded-lg focus:ring-primary-600 focus:border-blue-600 block w-full p-2.5"
                     required
                   />
                   <p className="text-red-600">{formErrors.lname}</p>
                 </div>
                 <div>
-                  <label for="email" class="block mb-2 text-sm font-medium  ">
+                  <label for="email" className="block mb-2 text-sm font-medium  ">
                     Email
                   </label>
                   <input
@@ -124,7 +124,7 @@ const Register = () => {
                     placeholder="xxx@abc.com"
                     onChange={changeHandler}
                     value={user.email}
-                    class="bg-gray-50 border border-gray-300  sm:text-sm rounded-lg focus:ring-primary-600 focus:border-blue-600 block w-full p-2.5"
+                    className="bg-gray-50 border border-gray-300  sm:text-sm rounded-lg focus:ring-primary-600 focus:border-blue-600 block w-full p-2.5"
                     required
                   />
                   <p className="text-red-600">{formErrors.email}</p>
@@ -132,7 +132,7 @@ const Register = () => {
                 <div>
                   <label
                     for="password"
-                    class="block mb-2 text-sm font-medium  "
+                    className="block mb-2 text-sm font-medium  "
                   >
                     Password
                   </label>
@@ -143,7 +143,7 @@ const Register = () => {
                     placeholder="Password"
                     onChange={changeHandler}
                     value={user.password}
-                    class="bg-gray-50 border border-gray-300  sm:text-sm rounded-lg focus:ring-primary-600 focus:border-blue-600 block w-full p-2.5"
+                    className="bg-gray-50 border border-gray-300  sm:text-sm rounded-lg focus:ring-primary-600 focus:border-blue-600 block w-full p-2.5"
                     required
                   />
                   <p className="text-red-600">{formErrors.password}</p>
@@ -151,7 +151,7 @@ const Register = () => {
                 <div>
                   <label
                     for="password"
-                    class="block mb-2 text-sm font-medium  "
+                    className="block mb-2 text-sm font-medium  "
                   >
                     Confirm Password
                   </label>
@@ -162,7 +162,7 @@ const Register = () => {
                     placeholder="Confirm Password"
                     onChange={changeHandler}
                     value={user.cpassword}
-                    class="bg-gray-50 border border-gray-300  sm:text-sm rounded-lg focus:ring-primary-600 focus:border-blue-600 block w-full p-2.5"
+                    className="bg-gray-50 border border-gray-300  sm:text-sm rounded-lg focus:ring-primary-600 focus:border-blue-600 block w-full p-2.5"
                     required
                   />
                   <p className="text-red-600">{formErrors.cpassword}</p>
@@ -172,7 +172,7 @@ const Register = () => {
                     <div className="flex mb-2 mx-3 flex-row ">
                       <label
                         for="password"
-                        class="block  p-2 text-sm font-medium  "
+                        className="block  p-2 text-sm font-medium  "
                       >
                         Student
                       </label>
@@ -182,14 +182,14 @@ const Register = () => {
                         value="STUDENT"
                         id="student"
                         onChange={changeHandler}
-                        class="bg-gray-50 border border-gray-300  sm:text-sm rounded-lg focus:ring-primary-600 focus:border-blue-600 block w-full p-2.5"
+                        className="bg-gray-50 border border-gray-300  sm:text-sm rounded-lg focus:ring-primary-600 focus:border-blue-600 block w-full p-2.5"
                         required
                       />
                     </div>
                     <div className="flex mb-2  mx-3 flex-row ">
                       <label
                         for="password"
-                        class="block p-2 text-sm font-medium  "
+                        className="block p-2 text-sm font-medium  "
                       >
                         Faculty
                       </label>
@@ -199,7 +199,7 @@ const Register = () => {
                         value="FACULTY"
                         id="faculty"
                         onChange={changeHandler}
-                        class="bg-gray-50 border border-gray-300  sm:text-sm rounded-lg focus:ring-primary-600 focus:border-blue-600 block w-full p-2.5"
+                        className="bg-gray-50 border border-gray-300  sm:text-sm rounded-lg focus:ring-primary-600 focus:border-blue-600 block w-full p-2.5"
                         required
                       />
                     </div>
@@ -207,16 +207,16 @@ const Register = () => {
                   <p className="text-red-600">{formErrors.role}</p>
                 </div>
                 <button
-                  class="w-full text-black  hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-gray-700  text-white dark:focus:ring-primary-800"
+                  className="w-full text-black  hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-gray-700  text-white dark:focus:ring-primary-800"
                   onClick={signupHandler}
                 >
                   Register
                 </button>
-                <p class="text-sm font-light text-gray-500 dark:text-gray-900">
+                <p className="text-sm font-light text-gray-500 dark:text-gray-900">
                   Already registered?{" "}
                   <Link
                     to="/login"
-                    class="font-medium text-primary-900 hover:underline dark:text-primary-500"
+                    className="font-medium text-primary-900 hover:underline dark:text-primary-500"
                   >
                     Login
                   </Link>

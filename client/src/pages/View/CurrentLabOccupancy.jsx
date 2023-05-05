@@ -151,7 +151,7 @@ export default function CurrentLabOccupancy() {
   }, []);
 
   return (
-    <div class="grid md:grid-cols-2 lg:grid-cols-3  gap-8 auto-cols-fr	">
+    <div className="grid md:grid-cols-2 lg:grid-cols-3  gap-8 auto-cols-fr	">
       {data?.map((e, index) => {
         return (
           <>

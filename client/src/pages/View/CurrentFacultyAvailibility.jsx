@@ -102,17 +102,17 @@ export default function CurrentFacultyAvailability() {
   };
   return (
     <>
-      <div class="flex h-full">
-        <div class="w-3/5  flex items-center justify-center h-full">
-          <div class="bg-white shadow-lg rounded-lg">
+      <div className="flex h-full">
+        <div className="w-3/5  flex items-center justify-center h-full">
+          <div className="bg-white shadow-lg rounded-lg">
             {data != null ? (
               <>
-                <div class="px-4 py-2 border-b border-gray-200">
-                  <h2 class="text-lg text-center font-medium text-gray-800">
+                <div className="px-4 py-2 border-b border-gray-200">
+                  <h2 className="text-lg text-center font-medium text-gray-800">
                     {formData.name}
                   </h2>
                 </div>
-                <div class="px-4 py-2 m-5 ">
+                <div className="px-4 py-2 m-5 ">
                   <p className="text-green-500">
                     TimeSlot: {formData.timeslot}
                   </p>
@@ -124,22 +124,22 @@ export default function CurrentFacultyAvailability() {
               </>
             ) : resData == null ? (
               <>
-                <div class="px-4 py-2 border-b border-gray-200">
-                  <h2 class="text-gray-800 text-center">Faculty Status</h2>
+                <div className="px-4 py-2 border-b border-gray-200">
+                  <h2 className="text-gray-800 text-center">Faculty Status</h2>
                 </div>
-                <div class="px-4 py-2 m-5">
-                  <p class="text-red-700">
+                <div className="px-4 py-2 m-5">
+                  <p className="text-red-700">
                     Select faculty from faculty status box
                   </p>
                 </div>
               </>
             ) : (
               <>
-                <div class="px-4 py-2 border-b border-gray-200">
-                  <h2 class="text-gray-800 text-center">{formData.name}</h2>
+                <div className="px-4 py-2 border-b border-gray-200">
+                  <h2 className="text-gray-800 text-center">{formData.name}</h2>
                 </div>
-                <div class="px-4 py-2 m-5">
-                  <p class="text-red-700">
+                <div className="px-4 py-2 m-5">
+                  <p className="text-red-700">
                     Faculty Not Available for Timeslot {formData.timeslot} on{" "}
                     {formData.day}
                   </p>
@@ -148,16 +148,16 @@ export default function CurrentFacultyAvailability() {
             )}
           </div>
         </div>
-        <div class="w-2/5 border-l-2 flex items-center justify-center h-full ">
-          <div class="bg-white shadow-lg rounded-lg p-16 border">
-            <h4 class="text-lg font-bold mb-4">Search Faculty Status</h4>
-            <div class="flex flex-col gap-4">
-              <div class="flex flex-col">
-                <label class="text-gray-700 mb-2" for="names">
+        <div className="w-2/5 border-l-2 flex items-center justify-center h-full ">
+          <div className="bg-white shadow-lg rounded-lg p-16 border">
+            <h4 className="text-lg font-bold mb-4">Search Faculty Status</h4>
+            <div className="flex flex-col gap-4">
+              <div className="flex flex-col">
+                <label className="text-gray-700 mb-2" for="names">
                   Faculty Name
                 </label>
                 <select
-                  class="border border-gray-400 rounded-lg px-3 py-2"
+                  className="border border-gray-400 rounded-lg px-3 py-2"
                   id="names"
                   onChange={(e) => {
                     setFormData((prev) => {
@@ -180,13 +180,13 @@ export default function CurrentFacultyAvailability() {
                 </select>
               </div>
 
-              <div class="flex flex-col">
-                <label class="text-gray-700 mb-2" for="time">
+              <div className="flex flex-col">
+                <label className="text-gray-700 mb-2" for="time">
                   Timeslot
                 </label>
 
                 <select
-                  class="border border-gray-400 rounded-lg px-3 py-2"
+                  className="border border-gray-400 rounded-lg px-3 py-2"
                   id="time"
                   onChange={(e) => {
                     setFormData((prev) => {
@@ -209,12 +209,12 @@ export default function CurrentFacultyAvailability() {
                 </select>
               </div>
 
-              <div class="flex flex-col">
-                <label class="text-gray-700 mb-2" for="days">
+              <div className="flex flex-col">
+                <label className="text-gray-700 mb-2" for="days">
                   Days of the Week
                 </label>
                 <select
-                  class="border border-gray-400 rounded-lg px-3 py-2"
+                  className="border border-gray-400 rounded-lg px-3 py-2"
                   id="days"
                   onChange={(e) => {
                     setFormData((prev) => {

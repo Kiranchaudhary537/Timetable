@@ -73,39 +73,39 @@ export const TimeSlotModal = ({ title, showModal, setShowModal, setData }) => {
             </h3>
           </div>
           <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-            <div class="flex flex-col space-y-4">
-              <label for="day" class="text-lg font-medium">
+            <div className="flex flex-col space-y-4">
+              <label for="day" className="text-lg font-medium">
                 Day
               </label>
               <input
                 id="day"
                 name="day"
                 type="text"
-                class="border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 onChange={(e) => setDay(e.target.value)}
                 placeholder="First letter must be capital Ex. Monday"
               />
 
-              <label for="starttime" class="text-lg font-medium">
+              <label for="starttime" className="text-lg font-medium">
                 Start Time
               </label>
               <input
                 id="starttime"
                 name="starttime"
                 type="text"
-                class="border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 onChange={(e) => setStarttime(e.target.value)}
                 placeholder="Start with time then A.M or P.M Ex. 10:00 A.M"
               />
 
-              <label for="endtime" class="text-lg font-medium">
+              <label for="endtime" className="text-lg font-medium">
                 End Time
               </label>
               <input
                 id="endtime"
                 name="endtime"
                 type="text"
-                class="border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 onChange={(e) => setEndtime(e.target.value)}
                 placeholder="Start with time then A.M or P.M Ex. 10:30 A.M"
               />
@@ -200,39 +200,39 @@ export const SubjectModal = ({ title, showModal, setShowModal, setData }) => {
             </h3>
           </div>
           <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-            <div class="flex flex-col space-y-4">
-              <label for="day" class="text-lg font-medium">
+            <div className="flex flex-col space-y-4">
+              <label for="day" className="text-lg font-medium">
                 Day
               </label>
               <input
                 id="day"
                 name="day"
                 type="text"
-                class="border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 onChange={(e) => setDay(e.target.value)}
                 placeholder="First letter must be capital Ex. Monday"
               />
 
-              <label for="starttime" class="text-lg font-medium">
+              <label for="starttime" className="text-lg font-medium">
                 Start Time
               </label>
               <input
                 id="starttime"
                 name="starttime"
                 type="text"
-                class="border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 onChange={(e) => setStarttime(e.target.value)}
                 placeholder="Start with time then A.M or P.M Ex. 10:00 A.M"
               />
 
-              <label for="endtime" class="text-lg font-medium">
+              <label for="endtime" className="text-lg font-medium">
                 End Time
               </label>
               <input
                 id="endtime"
                 name="endtime"
                 type="text"
-                class="border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 onChange={(e) => setEndtime(e.target.value)}
                 placeholder="Start with time then A.M or P.M Ex. 10:30 A.M"
               />

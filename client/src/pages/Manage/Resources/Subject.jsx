@@ -123,15 +123,15 @@ const SubjectModal = ({ title, showModal, setShowModal, setData }) => {
             </h3>
           </div>
           <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-            <div class="flex flex-col space-y-4">
-              <label for="name" class="text-lg font-medium">
+            <div className="flex flex-col space-y-4">
+              <label for="name" className="text-lg font-medium">
                 Name
               </label>
               <input
                 id="name"
                 name="name"
                 type="text"
-                class="border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 onChange={(e) => {
                   setName(e.target.value.trim().trimStart().toUpperCase());
                   console.log(e.target.value);
@@ -139,7 +139,7 @@ const SubjectModal = ({ title, showModal, setShowModal, setData }) => {
                 placeholder="Applied operating system"
               />
 
-              <label for="division" class="text-lg font-medium">
+              <label for="division" className="text-lg font-medium">
                 Short Name
               </label>
 
@@ -147,13 +147,13 @@ const SubjectModal = ({ title, showModal, setShowModal, setData }) => {
                 id="short_form"
                 name="short_form"
                 type="text"
-                class="border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 onChange={(e) => {
                   setShortForm(e.target.value.trim().trimStart().toUpperCase());
                 }}
                 placeholder="AOS"
               />
-              <label for="division" class="text-lg font-medium">
+              <label for="division" className="text-lg font-medium">
                 Semester
               </label>
 
@@ -161,7 +161,7 @@ const SubjectModal = ({ title, showModal, setShowModal, setData }) => {
                 id="semester"
                 name="semester"
                 type="text"
-                class="border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 onChange={(e) => {
                   setSemester(e.target.value.trim().trimStart().toUpperCase());
                 }}
@@ -170,7 +170,7 @@ const SubjectModal = ({ title, showModal, setShowModal, setData }) => {
 
               <div className="flex flex-row  mx-1">
                 <div>
-                  <label for="min" class="mx-1 text-lg font-medium">
+                  <label for="min" className="mx-1 text-lg font-medium">
                     Min
                   </label>
 
@@ -178,7 +178,7 @@ const SubjectModal = ({ title, showModal, setShowModal, setData }) => {
                     id="min"
                     name="min"
                     type="number"
-                    class="border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     onChange={(e) => {
                       setMin(e.target.value.trim().trimStart().toUpperCase());
                     }}
@@ -187,14 +187,14 @@ const SubjectModal = ({ title, showModal, setShowModal, setData }) => {
                 </div>
                 <div>
                   {" "}
-                  <label for="max" class="mx-1 text-lg font-medium">
+                  <label for="max" className="mx-1 text-lg font-medium">
                     Max
                   </label>
                   <input
                     id="max"
                     name="max"
                     type="number"
-                    class="border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     onChange={(e) => {
                       setMax(e.target.value.trim().trimStart().toUpperCase());
                     }}
@@ -343,11 +343,11 @@ export default function Classroom() {
               >
                 <MdDeleteForever className="" size={28} color={"red"} />
               </div>
-              <div class=" m-1 flex justify-center">
-                <div class=" p-2 xl:w-96 flex flex-row">
+              <div className=" m-1 flex justify-center">
+                <div className=" p-2 xl:w-96 flex flex-row">
                   <input
                     type="search"
-                    class="relative m-0 block w-full min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-1.5 text-base font-normal text-neutral-700 outline-none transition duration-300 ease-in-out focus:border-primary-600 focus:text-neutral-700 focus:shadow-te-primary focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200"
+                    className="relative m-0 block w-full min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-1.5 text-base font-normal text-neutral-700 outline-none transition duration-300 ease-in-out focus:border-primary-600 focus:text-neutral-700 focus:shadow-te-primary focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200"
                     id="exampleSearch"
                     placeholder="search"
                     onChange={(e) => setsearchInput(e.target.value)}
@@ -367,7 +367,7 @@ export default function Classroom() {
                 <button
                   type="button"
                   onClick={handleShowModal}
-                  class=" p-2 mx-auto my-2 text-white bg-blue-600 rounded hover:bg-blue-700 md:mx-0 font-semibold"
+                  className=" p-2 mx-auto my-2 text-white bg-blue-600 rounded hover:bg-blue-700 md:mx-0 font-semibold"
                 >
                   Add New Subject
                 </button>

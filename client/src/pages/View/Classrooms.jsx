@@ -48,7 +48,7 @@ export default function Classrooms() {
   }, []);
 
   return (
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 auto-cols-fr	">
+    <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 auto-cols-fr	">
       {data.map((e) => {
         return (
           <Link to={`no=${e.no}&type=${e.type}`} state={e}>
