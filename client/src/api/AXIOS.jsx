@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const AXIOS = axios.create({
-  baseURL: "http://localhost:3000/",
+  baseURL: "https://timetable-api-z53n.onrender.com/",
   headers: {
     Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
     "Content-Type": "application/json",
