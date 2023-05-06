@@ -81,7 +81,7 @@ export default function ClassTimetable() {
   const { ClassId } = useParams();
   useEffect(() => {
     AXIOS
-      .get("http://localhost:3000/v1/getclasstimetable/" + ClassId)
+      .get("/v1/getclasstimetable/" + ClassId)
       .then((res) => {
         setData(res.data.message);
         setData1(res.data.message.timeslots);
