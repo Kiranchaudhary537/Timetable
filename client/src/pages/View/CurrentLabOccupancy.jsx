@@ -2,44 +2,19 @@ import React, { useEffect, useState, useRef } from "react";
 import AXIOS from "../../api/AXIOS";
 
 function isCurrentTimeInTimeslot(timeslot) {
-  // Get the current time
-  const currentTime = new Date();
+  const currentTime = new Date(); // Get the current time
 
-  // Extract the start and end times from the timeslot string
-  const [startTimeStr, endTimeStr] = timeslot.split(" TO ");
-  const startTimeParts = startTimeStr.match(/(\d+):(\d+)\s+(am|pm)/i);
-  const endTimeParts = endTimeStr.match(/(\d+):(\d+)\s+(am|pm)/i);
+  const [startTime, endTime] = timeslot.split(" TO "); // Split the timeslot into start and end times
 
-  // Convert the start and end times to Date objects
-  const startHour =
-    parseInt(startTimeParts[1], 10) +
-    (startTimeParts[3].toLowerCase() === "pm" ? 12 : 0);
-  const startMinute = parseInt(startTimeParts[2], 10);
-  const endHour =
-    parseInt(endTimeParts[1], 10) +
-    (endTimeParts[3].toLowerCase() === "pm" ? 12 : 0);
-  const endMinute = parseInt(endTimeParts[2], 10);
-  const startTime = new Date(
-    currentTime.getFullYear(),
-    currentTime.getMonth(),
-    currentTime.getDate(),
-    startHour,
-    startMinute
-  );
-  const endTime = new Date(
-    currentTime.getFullYear(),
-    currentTime.getMonth(),
-    currentTime.getDate(),
-    endHour,
-    endMinute
-  );
+  const start = new Date(currentTime.toDateString() + " " + startTime); // Create a Date object for the start time
+  const end = new Date(currentTime.toDateString() + " " + endTime); // Create a Date object for the end time
 
-  // Compare the current time with the start and end times
-  const isCurrentTimeInTimeslot =
-    currentTime.getTime() >= startTime.getTime() &&
-    currentTime.getTime() <= endTime.getTime();
-
-  return isCurrentTimeInTimeslot;
+  // Check if the current time is within the timeslot
+  if (currentTime >= start && currentTime <= end) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
 function Popover({ children, onClose, data }) {
@@ -48,17 +23,8 @@ function Popover({ children, onClose, data }) {
   const popoverRef = useRef(null);
   const childRef = useRef(null);
 
-  const handleView = () => {
-    data?.map((e) => {
-      if (e.Timeslot != "") {
-        if (isCurrentTimeInTimeslot(e.Timeslot) == true) {
-          setDetails(e);
-          return false;
-        }
-      }
-    });
-    return true;
-  };
+  console.log(data);
+  6;
   useEffect(() => {
     function handleClickOutside(event) {
       if (popoverRef.current && !popoverRef.current.contains(event.target)) {
@@ -66,7 +32,6 @@ function Popover({ children, onClose, data }) {
         onClose();
       }
     }
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [onClose]);
@@ -104,12 +69,11 @@ function Popover({ children, onClose, data }) {
         style={divStyle}
         ref={popoverRef}
       >
-        {handleView() == true ? (
+        {data?.view == false ? (
           <p className="text-xl text-green-500">Currently lab is empty</p>
         ) : (
           <div>
             <p className="text-xl text-red-500">Currently lab is occupied</p>
-            <p className="text-xl text-red-500">{console.log(details)}</p>
           </div>
         )}
       </div>
@@ -121,7 +85,7 @@ function Popover({ children, onClose, data }) {
     <div className="relative">
       <div
         className={`block border-2 max-w-sm rounded-lg bg-white  p-6 shadow-lg ${
-          handleView() == true ? "dark:bg-lime-700" : "dark:bg-red-700"
+          data?.view == false ? "dark:bg-lime-700" : "dark:bg-red-700"
         }`}
       >
         {React.cloneElement(children, {
@@ -138,8 +102,10 @@ export default function CurrentLabOccupancy() {
   const width = Math.floor(window.innerWidth / 20);
   const [activePopover, setActivePopover] = useState(null);
   const [data, setData] = useState([]);
+  const [view, setView] = useState([]);
   const today = new Date();
   const dayIndex = (((today.getDay() - 1) % 7) + 7) % 7;
+
   useEffect(() => {
     AXIOS.get("/v1/getcurrentlabstatus")
       .then((res) => {
@@ -150,18 +116,44 @@ export default function CurrentLabOccupancy() {
       });
   }, []);
 
+  useEffect(() => {
+    const newView = [];
+    data?.forEach((e) => {
+      let f = true;
+      const timeslot = e?.days[dayIndex]?.timeslots;
+      timeslot?.forEach((slot) => {
+        if (slot.Timeslot != "") {
+          if (isCurrentTimeInTimeslot(slot.Timeslot) == true) {
+            console.log(isCurrentTimeInTimeslot(slot.Timeslot));
+            f = false;
+          }
+        }
+      });
+      if (f == true) {
+        newView.push({ no: e.no, view: false });
+      } else {
+        newView.push({ no: e.no, view: true });
+      }
+    });
+
+    const uniqueView = newView.filter(
+      (v, i, a) => a.findIndex((t) => t.no == v.no) == i
+    );
+    setView(uniqueView);
+  }, [data]);
+
   return (
     <div className="grid md:grid-cols-2 lg:grid-cols-3  gap-8 auto-cols-fr	">
       {data?.map((e, index) => {
+        const viewData = view.find((item) => item.no == e.no);
         return (
           <>
             <Popover
               key={index}
-              data={data[0]?.days[dayIndex]?.timeslots}
+              data={viewData}
               onClose={() => setActivePopover(null)}
-              // handleView={handleView()}
             >
-              <div className="flex justify-center">
+              <div className="flex justify-between p-6 ">
                 <div
                   className="flex 
                    flex-row flex-nowrap m-3 "

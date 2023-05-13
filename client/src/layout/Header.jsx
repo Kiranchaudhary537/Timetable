@@ -47,46 +47,50 @@ const RequestModal = ({ showModal, setShowModal }) => {
     >
       <div className=" top-0 left-0 w-full h-full flex items-center justify-center bg-gray-900 bg-opacity-50">
         <div className="w-full max-w-lg mx-auto rounded-lg shadow-lg bg-white">
-          <div className="">
-            <div className="px-6 py-4 flex justify-between items-center">
-              <h3 className="text-3xl font-semibold text-gray-900">
-                Request for faculty role
-              </h3>
-            </div>
-            <hr className="border-gray-300" />
-            <div className="px-6 py-4">
-              {data?.map((e, i) => {
-                return (
-                  <div className="flex flex-row justify-between mx-1">
-                    <p
-                      key={i}
-                      className="text-gray-500 hover:text-gray-700 text-xl"
-                    >
-                      {e.email}
-                    </p>
-                    <div className="mx-1 flex flex-row">
-                      <AiOutlineCheckCircle
-                        className="mx-1"
-                        size={24}
-                        color="#333"
-                        onClick={() => {
-                          handleSubmit(e.email);
-                        }}
-                      />
-                      <AiOutlineCloseCircle
-                        className="mx-1"
-                        size={24}
-                        color="#333"
-                        onClick={() => {
-                          handleDelete(e.email);
-                        }}
-                      />
+          {localStorage.getItem("userRole") == "ADMIN" ? (
+            <div className="">
+              <div className="px-6 py-4 flex justify-between items-center">
+                <h3 className="text-3xl font-semibold text-gray-900">
+                  Request for faculty role
+                </h3>
+              </div>
+              <hr className="border-gray-300" />
+              <div className="px-6 py-4">
+                {data?.map((e, i) => {
+                  return (
+                    <div className="flex flex-row justify-between mx-1">
+                      <p
+                        key={i}
+                        className="text-gray-500 hover:text-gray-700 text-xl"
+                      >
+                        {e.email}
+                      </p>
+                      <div className="mx-1 flex flex-row">
+                        <AiOutlineCheckCircle
+                          className="mx-1"
+                          size={24}
+                          color="#333"
+                          onClick={() => {
+                            handleSubmit(e.email);
+                          }}
+                        />
+                        <AiOutlineCloseCircle
+                          className="mx-1"
+                          size={24}
+                          color="#333"
+                          onClick={() => {
+                            handleDelete(e.email);
+                          }}
+                        />
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
-          </div>
+          ) : (
+            <></>
+          )}
           <hr className="border-gray-300" />
           <div className="px-6 py-4 flex justify-end">
             <button
@@ -114,12 +118,16 @@ export default function Header({ headerTitle }) {
           <div>
             <ul className=" flex flex-row">
               <li className="m-2 mx-4">
-                <AiOutlineUserAdd
-                  className="mx-1"
-                  size={24}
-                  color="#333"
-                  onClick={() => setShowModal(true)}
-                />
+                {localStorage.getItem("userRole") == "ADMIN" ? (
+                  <AiOutlineUserAdd
+                    className="mx-1"
+                    size={24}
+                    color="#333"
+                    onClick={() => setShowModal(true)}
+                  />
+                ) : (
+                  <></>
+                )}
                 {/* <div
                  
                   className="flex items-center p-2 text-base font-normal  rounded-lg  hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700"

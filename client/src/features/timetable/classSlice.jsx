@@ -430,7 +430,8 @@ export const classSlice = createSlice({
   reducers: {
     updateClassroomTimetable: (state, action) => {
       const { dayIndex, slotIndex, slot, semester, division } = action.payload;
-      if (slot.Classroom?.trim() == "" || slot.Type?.trim() == "") {
+      console.log(slot);
+      if (slot.Classroom?.trim() == "" && slot.Type?.trim() == "") {
         return state;
       }
       const index = state.findIndex(
@@ -472,7 +473,7 @@ export const classSlice = createSlice({
               return {
                 day: day.day,
                 timeslots: day.timeslots.map((timeslot) => {
-                  if (timeslot.id === slot.id) {
+                  if (timeslot.id == slot.id) {
                     return {
                       id: slot.id,
                       Subject: slot.Subject,

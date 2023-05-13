@@ -462,7 +462,7 @@ export const timetableSlice = createSlice({
         faculty,
         valueForUpdate,
       } = action.payload;
-     
+
       if (valueForUpdate == "Faculty") {
         const updatedDay = state.days[dayIndex];
 
@@ -482,7 +482,7 @@ export const timetableSlice = createSlice({
           Type: type,
           Faculty: faculty,
         };
-
+        
         const updatedDayObj = {
           ...updatedDay,
           timeslots: updatedDay.timeslots.map((s) =>

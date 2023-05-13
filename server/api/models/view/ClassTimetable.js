@@ -72,6 +72,10 @@ const ClassTimetableSchema = new mongoose.Schema(
               type: String,
               required: true,
             },
+            Type: {
+              type:String,
+              required:true,
+            },
             id: {
               type: Number,
               required: true,

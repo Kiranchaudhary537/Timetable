@@ -404,7 +404,7 @@ export default function Classroom() {
                   <Cell dataKey="name" />
                 </Column>
                 <Column flexGrow={1}>
-                  <HeaderCell>Subject</HeaderCell>
+                  <HeaderCell>Semester</HeaderCell>
                   <Cell dataKey="semester" />
                 </Column>
                 <Column flexGrow={1}>
@@ -442,12 +442,12 @@ export default function Classroom() {
                   <HeaderCell>Short Name</HeaderCell>
                   <Cell dataKey="short_form" />
                 </Column>
-                <Column flexGrow={1}>
+                <Column flexGrow={1} fullText>
                   <HeaderCell>Name</HeaderCell>
                   <Cell dataKey="name" />
                 </Column>
                 <Column flexGrow={1}>
-                  <HeaderCell>Subject</HeaderCell>
+                  <HeaderCell>Semester</HeaderCell>
                   <Cell dataKey="semester" />
                 </Column>
                 <Column flexGrow={1}>

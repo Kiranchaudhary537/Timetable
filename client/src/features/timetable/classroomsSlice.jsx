@@ -55,7 +55,7 @@ export const classroomsSlice = createSlice({
     updateClassroom: (state, action) => {
       const { id, no, type } = action.payload;
       return state.map((item) => {
-        if (item.id === parseInt(id)) {
+        if (item.id == parseInt(id)) {
           return {
             ...item,
             no: no,

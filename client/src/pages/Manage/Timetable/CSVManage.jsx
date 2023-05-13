@@ -3,6 +3,7 @@ import Papa from "papaparse";
 import { useDispatch, useSelector } from "react-redux";
 import { setCSVToTimetable } from "../../../features/timetable/timetableSlice";
 import { updateTimeslot } from "../../../features/timetable/timeslotSlice";
+import { updateClassroom } from "../../../features/timetable/classroomsSlice";
 
 const getDayIndex = (day) => {
   const weekDays = [
@@ -56,7 +57,7 @@ function findTimeslotId(d, timeslots) {
 //   // });
 // };
 
-export default function CSVManage() {
+export default function CSVManage({ handleSubjectChange }) {
   const dispatch = useDispatch();
   const [data, setData] = useState();
   const [id, setId] = useState();
@@ -100,6 +101,7 @@ export default function CSVManage() {
       timeslot: "",
     },
   ]);
+
   useEffect(() => {
     console.log(timeslots);
   }, [timeslots]);
@@ -108,11 +110,32 @@ export default function CSVManage() {
       header: true,
       skipEmptyLines: true,
       complete: function (results) {
-        setData(results);
+        setData(results.data);
       },
     });
   };
 
+  useEffect(() => {
+    data?.map((e) => {
+      const match = timeslots.find((slot) => slot.timeslot == e.TIMESLOT);
+      if (!match) {
+        const emptyIndex = timeslots.findIndex((slot) => slot.timeslot == "");
+        if (emptyIndex > -1) {
+          const updatedTimeslots = [...timeslots];
+          updatedTimeslots[emptyIndex].timeslot = e.TIMESLOT;
+          setTimeslots(updatedTimeslots);
+          dispatch(updateTimeslot({ id: emptyIndex, timeslot: e.TIMESLOT }));
+          dispatch(
+            updateClassroom({ id: emptyIndex, no: e.CLASSROOM, type: e.TYPE })
+          );
+          dispatch(setCSVToTimetable({ data: e, id: emptyIndex }));
+
+          //
+          //handleSubjectChange(e.SUBJECT);
+        }
+      }
+    });
+  }, [data]);
 
   return (
     <div>

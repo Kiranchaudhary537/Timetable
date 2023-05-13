@@ -81,6 +81,65 @@ async function updateFacultyState(dispatch, timetable) {
   );
   return true;
 }
+async function updateSubjects(timetable, setUpdatedSubject) {
+  timetable.days?.map((day, i) => {
+    day.timeslots?.map((slot, j) => {
+      const Subject = slot.Subject;
+      if (Subject != "") {
+        setUpdatedSubject((prevState) => {
+          const index = prevState.findIndex(
+            (subject) => subject.name == Subject
+          );
+          if (index >= 0) {
+            // If it does, update the corresponding object's no property
+            return prevState.map((subject, i) => {
+              if (i == index) {
+                return {
+                  ...subject,
+                  no: subject.no + 1,
+                };
+              }
+              return subject;
+            });
+          } else {
+            // Otherwise, add a new object to the array
+            return [...prevState, { name: Subject, no: 1 }];
+          }
+        });
+      }
+    });
+  });
+  return true;
+}
+async function updateMaxofSubjects(array, setUpdatedSubject) {
+  array?.map((Subject) => {
+    if (Subject.short_form != "") {
+      setUpdatedSubject((prevState) => {
+        const index = prevState.findIndex(
+          (subject) => subject.name == Subject.short_form
+        );
+        if (index >= 0) {
+          return prevState.map((subject, i) => {
+            if (i == index) {
+              return {
+                ...subject,
+                max: Subject.max,
+              };
+            }
+            return subject;
+          });
+        } else {
+          // Otherwise, add a new object to the array
+          return [
+            ...prevState,
+            { name: Subject.short_form, no: 0, max: Subject.max },
+          ];
+        }
+      });
+    }
+  });
+  return true;
+}
 
 export default function ManageTimetable() {
   const timetable = useSelector((state) => state.timetable);
@@ -91,11 +150,15 @@ export default function ManageTimetable() {
   const classFaculty = useSelector((state) => state.classFaculty);
   const [isCheckcComplete, setIsCheckcComplete] = useState(false);
   const [isCheckfComplete, setIsCheckfComplete] = useState(false);
+  const [isChecksComplete, setIsChecksComplete] = useState(false);
   const [allFaculty, setAllFaculty] = useState([]);
   const [availFaculty, setAvailFaculty] = useState([]);
-  const [subject, setSubject] = useState([]);
   const [semester, setSemester] = useState([]);
   const [division, setDivision] = useState([]);
+  const [updatedSubject, setUpdatedSubject] = useState([
+    { name: "", no: 0, max: Infinity },
+  ]);
+  const [selectedSubject, setSelectedSubject] = useState("");
 
   const dispatch = useDispatch();
 
@@ -123,6 +186,35 @@ export default function ManageTimetable() {
     id: "",
   });
 
+  const handleSubjectChange = (selected) => {
+    const subjects = [...updatedSubject];
+    const subjectIndex = subjects.findIndex(
+      (subject) => subject.name == selected
+    );
+
+    if (subjectIndex != -1) {
+      subjects[subjectIndex] = {
+        ...subjects[subjectIndex],
+        no: subjects[subjectIndex].no + 1,
+      };
+    } else {
+      subjects.push({ name: selected, no: 1 });
+    }
+
+    if (selectedSubject) {
+      const prevSubjectIndex = subjects.findIndex(
+        (subject) => subject.name == selectedSubject
+      );
+      subjects[prevSubjectIndex] = {
+        ...subjects[prevSubjectIndex],
+        no: subjects[prevSubjectIndex].no - 1,
+      };
+    }
+
+    setSelectedSubject(selected);
+    setUpdatedSubject(subjects);
+  };
+
   const handleSlotChange = (type, e) => {
     if (type == "Faculty") {
       dispatch(
@@ -133,6 +225,7 @@ export default function ManageTimetable() {
         })
       );
     } else if (type == "Subject") {
+      handleSubjectChange(e);
       dispatch(
         updateTimetable({
           ...currentValue,
@@ -144,8 +237,8 @@ export default function ManageTimetable() {
   };
 
   useEffect(() => {
-    console.log(currentValue);
-  }, [currentValue]);
+    console.log(updatedSubject);
+  }, [updatedSubject]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -165,11 +258,18 @@ export default function ManageTimetable() {
             classroomtimetable,
             timeslots,
           }),
+          AXIOS.post("v1/manageresource/subject/updated", {
+            updatedSubject,
+          }),
         ])
           .then(() => {
             alert("Updated");
           })
-          .catch(() => {});
+          .catch(() => {
+            alert(
+              "Error while updating check your internet connnection and retry"
+            );
+          });
       }
     };
 
@@ -179,8 +279,11 @@ export default function ManageTimetable() {
   const handleSubmit = async () => {
     setIsCheckcComplete(false);
     setIsCheckcComplete(false);
+    setIsChecksComplete(false);
     const checkc = updateClassroomState(dispatch, timetable);
     const checkf = updateFacultyState(dispatch, timetable);
+    const checks = updateSubjects(timetable, setUpdatedSubject);
+    setIsChecksComplete(checks);
     setIsCheckcComplete(checkc);
     setIsCheckfComplete(checkf);
   };
@@ -202,6 +305,7 @@ export default function ManageTimetable() {
           dispatch(setTimetable({ timetable: res.data.message }));
           dispatch(setTimeSlot({ timeslots: res.data.message.timeslots }));
           dispatch(setClassroom({ classrooms: res.data.message.classrooms }));
+          updateSubjects(res.data?.message, setUpdatedSubject);
         }
       });
 
@@ -223,11 +327,7 @@ export default function ManageTimetable() {
         (f) => f.min < f.max && parseInt(currentValue.semester) == f.semester
       );
       setSubject(namesArray);
-      console.log(
-        res.data.res?.filter(
-          (f) => f.min < f.max && parseInt(currentValue.semester) == f.semester
-        )
-      );
+      updateMaxofSubjects(namesArray, setUpdatedSubject);
     });
   };
 
@@ -238,7 +338,6 @@ export default function ManageTimetable() {
       setAvailFaculty(allFaculty);
     });
     AXIOS.get("/v1/manageresource/class").then((e) => {
-      // setClasses(e.data.res);
       const semesterSet = new Set();
       const divisionSet = new Set();
 
@@ -387,6 +486,7 @@ export default function ManageTimetable() {
                               : "border"
                           }`}
                           onClick={() => {
+                            setSelectedSubject(ele.Subject);
                             setCurrentValue({
                               semester: currentValue.semester,
                               division: currentValue.division,
@@ -414,12 +514,12 @@ export default function ManageTimetable() {
               })}
             </tbody>
           </table>
-          <div className="flex flex-row justify-end p-2">
-            {/* {currentValue.semester == "" || currentValue.division == "" ? (
+          <div className="flex flex-row justify-between p-2">
+            {currentValue.semester == "" || currentValue.division == "" ? (
               <p>please select semester and division first</p>
             ) : (
-              <CSVManage />
-            )} */}
+              <CSVManage handleSubjectChange={handleSubjectChange} />
+            )}
 
             <div>
               <button
@@ -470,24 +570,24 @@ export default function ManageTimetable() {
             <ul className="list-disc pl-4 xl:mx-6">
               <ol className="flex flex-row justify-between px-1 bg-lime-700 text-center hover:bg-lime-800 m-1 border p-2 text-white ">
                 <li>Name</li>
-                <li>Min</li>
+                <li>Current</li>
                 <li>Max</li>
               </ol>
-              {[{ short_form: "" }, ...subject].map((e) => {
+              {[...updatedSubject].map((e) => {
                 return (
                   <li
                     className={`${
-                      true
+                      e.no <= e.max
                         ? "bg-lime-700 text-center hover:bg-lime-800 m-1 border p-2 text-white "
                         : "bg-red-700 text-center hover:bg-red-800 m-1 border p-2"
                     }`}
                     onClick={() => {
-                      handleSlotChange("Subject", e.short_form);
+                      handleSlotChange("Subject", e.name);
                     }}
                   >
                     <ol className="flex flex-row justify-between px-1">
-                      <li>{e.short_form}</li>
-                      <li> {e?.min}</li>
+                      <li>{e?.name}</li>
+                      <li> {e?.no}</li>
                       <li> {e?.max}</li>
                     </ol>
                   </li>

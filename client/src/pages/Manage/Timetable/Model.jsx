@@ -260,13 +260,6 @@ export const SubjectModal = ({ title, showModal, setShowModal, setData }) => {
   );
 };
 
-const dataofroom = [
-  { no: "1", type: "Lab" },
-  { no: "26", type: "Classroom" },
-  { no: "6", type: "Classroom" },
-  { no: "2", type: "Lab" },
-];
-
 export function TimeslotsModal({ setShowModal, showModal }) {
   const [modelData, setModalData] = useState([]);
   const [changeData, setChangeData] = useState({ id: "", timeslot: "" });
@@ -390,6 +383,7 @@ export function ClassroomModal({
   useEffect(() => {
     AXIOS.get("/v1/getclassroomtimetable").then((res) => {
       setClassroomTimetable(res.data.message);
+      console.log(res.data.message);
     });
 
     AXIOS.get("/v1/manageresource/classroom").then((res) => {
@@ -399,24 +393,31 @@ export function ClassroomModal({
 
   useEffect(() => {
     const tempdata = new Set(modelData.map((e) => e));
-
+    console.log(modelData);
     const existempdata = new Set();
     if (classroomtimetable.length > 0) {
       classroomtimetable.map((f) => {
-        console.log(f.days[0]?.timeslots[showModal.id - 1]);
+        console.log(f.no + f.type);
+        console.log(f.days[0]?.timeslots[parseInt(showModal.id) - 1]);
         console.log(
-          Semester + " " + Division + " " + timeslots[showModal.id]?.timeslot
+          Semester +
+            " " +
+            Division +
+            " " +
+            timeslots[parseInt(showModal.id)]?.timeslot
         );
         if (f.no != "" && f.type != "") {
-          const currentIndex = showModal.id - 1;
+          const currentIndex = parseInt(showModal.id) - 1;
+          const currentTimeslot = f.days[0]?.timeslots[currentIndex];
+          console.log(currentTimeslot);
           if (
-            (f.days[0]?.timeslots[currentIndex]?.Division == "" &&
-              f.days[0]?.timeslots[currentIndex]?.Semester == null &&
-              f.days[0]?.timeslots[currentIndex]?.Timeslot == "") ||
-            (f.days[0]?.timeslots[currentIndex]?.Division == Division &&
-              f.days[0]?.timeslots[currentIndex]?.Semester ==
-                parseInt(Semester) &&
-              f.days[0]?.timeslots[currentIndex]?.Timeslot ==
+            (currentTimeslot?.Division == "" &&
+              (currentTimeslot?.Semester == "" ||
+                currentTimeslot?.Semester == null) &&
+              currentTimeslot?.Timeslot == "") ||
+            (currentTimeslot?.Division == Division &&
+              currentTimeslot?.Semester == parseInt(Semester) &&
+              currentTimeslot?.Timeslot ==
                 timeslots[currentIndex + 1]?.timeslot)
           ) {
             tempdata.forEach((item) => {
@@ -431,8 +432,6 @@ export function ClassroomModal({
         }
       });
     }
-    console.log(tempdata);
-    console.log(existempdata);
     existempdata.forEach((e) => {
       tempdata.forEach((d) => {
         if (parseInt(d.no) == parseInt(e.no)) {
@@ -442,15 +441,6 @@ export function ClassroomModal({
     });
 
     console.log(existempdata);
-    // set the result to the state
-    // const seen = new Set();
-    // for (const item of tempdata) {
-    //   if (seen.has(item.no)) {
-    //     tempdata.delete(item);
-    //   } else {
-    //     seen.add(item.no);
-    //   }
-    // }
     setAvailClassroom([]);
     setAvailClassroom(Array.from(tempdata));
   }, [showModal, showModal?.is]);

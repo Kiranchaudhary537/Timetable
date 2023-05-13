@@ -19,6 +19,11 @@ const SubjectSchema = new mongoose.Schema(
       default: 0,
       require: true,
     },
+    current: {
+      type: Number,
+      default: 0,
+      require: true,
+    },
     max: {
       type: Number,
       require: true,

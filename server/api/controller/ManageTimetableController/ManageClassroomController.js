@@ -14,15 +14,15 @@ const addOrUpdateClassroomTimetable = async (req, res, next) => {
         console.log(e.days[0]);
         if (e.no != null) {
           if (e.no?.trim() != "") {
+            console.log(e);
             await ClassroomTimetable.findOneAndUpdate(
               {
                 no: e.no,
-                // type: e.type,
+                type: e.type,
               },
               {
                 no: e.no,
-                // type: e.type,
-                type: "",
+                type: e.type,
                 days: e.days,
                 timeslots: req.body.timeslots,
               },
