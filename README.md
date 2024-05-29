@@ -11,5 +11,5 @@ MERN
  ### filestructure
  client as front-end for view (react-native) 
 
- <br/>
+###
  server as back-end for modal,controller (nodejs, express, mangodb)
